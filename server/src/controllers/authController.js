@@ -1,5 +1,8 @@
-const { encrypt } = require("../utils/bcrypt")
+const { encrypt, compare } = require("../utils/bcrypt")
 const User = require('../models/users')
+const jwt = require('jsonwebtoken');
+require('dotenv').config()
+const secretKey = process.env.SECRET_KEY 
 
 const postUserController = async (user,password,email,phone) =>{
     const hashPassword = await encrypt(password)
@@ -18,5 +21,31 @@ const postUserController = async (user,password,email,phone) =>{
     return newUser
 }
 
+const loginController = async (email,password) => {
+    const user = await User.findOne({email})
 
-module.exports = {postUserController}
+    if (!user) {
+        return "Usuario invalido"
+    }
+
+    const checkPassword = await compare(password,user.password);
+
+    if (checkPassword) {
+        const token = jwt.sign({ userId: user.id, email: user.email }, secretKey, {
+            expiresIn: '1h' 
+        });
+        return {
+            token: token,
+            user: user
+        };
+    }
+
+    if (!checkPassword) {
+        return {
+            error:"Contraseña incorrecta"
+        }
+    }
+}
+
+
+module.exports = {postUserController,loginController}

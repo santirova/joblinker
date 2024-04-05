@@ -1,4 +1,4 @@
-const {postUserController} = require('../controllers/authController')
+const {postUserController, loginController} = require('../controllers/authController')
 
 const postUserHandler = async (req, res) => {
     const { user, password, email, phone, photo } = req.body;
@@ -15,4 +15,14 @@ const postUserHandler = async (req, res) => {
     }
 };
 
-module.exports = {postUserHandler}
+const loginHandler = async (req,res)=>{
+    try {
+        const {email,password} = req.body
+        const token = await loginController(email,password)
+        res.status(200).send(token)
+    } catch (error) {
+        res.status(400).send({error:error.message})
+    }
+}
+
+module.exports = {postUserHandler,loginHandler}
