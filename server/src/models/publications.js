@@ -1,22 +1,22 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
-  userId: { type: String, required: true, ref:'User'},
+  userId: { type: String, required: true, ref: 'User' },
   content: { type: String, required: true },
   date: { type: Date, default: Date.now }
-});
+})
 
 const likeSchema = new mongoose.Schema({
-  userId: { type: String, required: true,ref:'User' }
-});
+  userId: { type: String, required: true, ref: 'User' }
+})
 
 const postSchema = new mongoose.Schema({
   text: { type: String, required: true },
-  photo: { type: String }, 
-  likes: [likeSchema], 
+  photo: { type: String },
+  likes: [likeSchema],
   comments: [commentSchema]
-});
+})
 
-const Publication = mongoose.model('Publication', postSchema);
+const Publication = mongoose.model('Publication', postSchema)
 
-module.exports = Publication;
+module.exports = Publication
