@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
-  user: { type: String, required: true },
+  userId: { type: String, required: true, ref:'User'},
   content: { type: String, required: true },
   date: { type: Date, default: Date.now }
 });
 
 const likeSchema = new mongoose.Schema({
-  user: { type: String, required: true }
+  userId: { type: String, required: true,ref:'User' }
 });
 
 const postSchema = new mongoose.Schema({
