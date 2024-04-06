@@ -1,4 +1,5 @@
-const Publication = require('../models/publications')
+const { Publication, Comment } = require('../models/publications')
+const { User } = require('../models/users')
 
 const postPublication = async (user, text) => {
   const newPost = new Publication({
@@ -25,8 +26,26 @@ const updatePublication = async (_id, text) => {
 }
 
 const getAllPublications = async () => {
-  const publications = await Publication.find()
+  const publications = await Publication
+    .find()
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'user', // <- campo del comentario que deseamos poblar
+        select: 'username',
+        model: User // <- campos que deseo traer de la colección de usuarios
+      },
+      model: Comment,
+      select: 'text '
+    })
   return publications
 }
 
-module.exports = { postPublication, deletePublication, updatePublication, getAllPublications }
+const postComment = async (user, text, postId) => {
+  const newComment = new Comment({ text, user, postId })
+  const savedComment = await newComment.save()
+  const comentedPost = await Publication.findByIdAndUpdate(postId, { $push: { comments: savedComment._id } })
+  console.log(comentedPost)
+  return savedComment
+}
+module.exports = { postPublication, deletePublication, updatePublication, getAllPublications, postComment }

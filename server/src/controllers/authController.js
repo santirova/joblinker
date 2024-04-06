@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const secretKey = process.env.SECRET_KEY
 
-const postUserController = async (user, password, email, phone) => {
+const postUserController = async (username, password, email, phone) => {
   const hashPassword = await encrypt(password)
   const newUser = new User({
-    user,
+    username,
     password: hashPassword,
     email,
     phone

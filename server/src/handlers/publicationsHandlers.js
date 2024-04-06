@@ -1,4 +1,4 @@
-const { postPublication, deletePublication, updatePublication, getAllPublications } = require('../controllers/publicationsControllers')
+const { postPublication, deletePublication, updatePublication, getAllPublications, postComment } = require('../controllers/publicationsControllers')
 
 const postPublicationHandler = async (req, res) => {
   try {
@@ -37,10 +37,21 @@ const getAllPublicationsHandler = async (req, res) => {
     res.status(400).send({ error: error.message })
   }
 }
+const postCommentHandler = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const { text, postId } = req.body
+    const newComment = await postComment(userId, text, postId)
+    res.send(newComment)
+  } catch (error) {
+    res.status(400).send({ error: error.message })
+  }
+}
 
 module.exports = {
   postPublicationHandler,
   deletePublicationHandler,
   getAllPublicationsHandler,
-  updatePublicationHandler
+  updatePublicationHandler,
+  postCommentHandler
 }
