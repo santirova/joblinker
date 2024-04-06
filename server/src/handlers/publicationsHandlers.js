@@ -1,4 +1,4 @@
-const { postPublication, deletePublication } = require('../controllers/publicationsControllers')
+const { postPublication, deletePublication, updatePublication, getAllPublications } = require('../controllers/publicationsControllers')
 
 const postPublicationHandler = async (req, res) => {
   try {
@@ -21,16 +21,20 @@ const deletePublicationHandler = async (req, res) => {
 }
 const updatePublicationHandler = async (req, res) => {
   try {
-    res.send('hola')
+    const { id } = req.params
+    const { text } = req.body
+    const updated = await updatePublication(id, text)
+    res.send(updated)
   } catch (error) {
-    res.send('hola')
+    res.status(400).send({ error: error.message })
   }
 }
 const getAllPublicationsHandler = async (req, res) => {
   try {
-    res.send('hola')
+    const publications = await getAllPublications()
+    res.send(publications)
   } catch (error) {
-    res.send('hola')
+    res.status(400).send({ error: error.message })
   }
 }
 

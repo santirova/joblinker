@@ -15,4 +15,18 @@ const deletePublication = async (postId) => {
   return 'successfully removed'
 }
 
-module.exports = { postPublication, deletePublication }
+const updatePublication = async (_id, text) => {
+  const updated = await Publication.findOneAndUpdate(
+    { _id },
+    { text },
+    { new: true }
+  )
+  return updated
+}
+
+const getAllPublications = async () => {
+  const publications = await Publication.find()
+  return publications
+}
+
+module.exports = { postPublication, deletePublication, updatePublication, getAllPublications }
