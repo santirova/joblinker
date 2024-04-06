@@ -13,11 +13,13 @@ const postUserController = async (user, password, email, phone) => {
     phone
   })
   await newUser.save()
+
   newUser.toObject({
     transform: function (doc, ret) {
       delete ret.password
     }
   })
+
   return newUser
 }
 
