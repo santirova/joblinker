@@ -1,4 +1,4 @@
-const { postComment, deleteComment } = require('../controllers/commentsControllers')
+const { postComment, deleteComment, updatedComment } = require('../controllers/commentsControllers')
 
 const postCommentHandler = async (req, res) => {
     try {
@@ -22,4 +22,14 @@ const deleteCommentHandler = async (req, res) => {
     }
 }
 
-module.exports = { postCommentHandler, deleteCommentHandler }
+const updateCommentHandler = async (req, res) => {
+    try {
+        const { userId } = req.params
+        const { commentId, text } = req.body
+        const updated = await updatedComment(userId, commentId, text)
+        res.send(updated)
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+}
+module.exports = { postCommentHandler, deleteCommentHandler, updateCommentHandler }
