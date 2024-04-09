@@ -1,4 +1,4 @@
-const { postUserController, loginController } = require('../controllers/authController')
+const { postUserController, loginController } = require('../controllers/authControllers')
 
 const postUserHandler = async (req, res) => {
   const { username, password, email, phone, photo } = req.body

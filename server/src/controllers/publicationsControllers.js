@@ -1,5 +1,6 @@
-const { Publication, Comment } = require('../models/publications')
+const { Publication } = require('../models/publications')
 const { User } = require('../models/users')
+const { Comment } = require('../models/comments')
 
 const postPublication = async (user, text) => {
   const newPost = new Publication({
@@ -41,11 +42,4 @@ const getAllPublications = async () => {
   return publications
 }
 
-const postComment = async (user, text, postId) => {
-  const newComment = new Comment({ text, user, postId })
-  const savedComment = await newComment.save()
-  const comentedPost = await Publication.findByIdAndUpdate(postId, { $push: { comments: savedComment._id } })
-  console.log(comentedPost)
-  return savedComment
-}
-module.exports = { postPublication, deletePublication, updatePublication, getAllPublications, postComment }
+module.exports = { postPublication, deletePublication, updatePublication, getAllPublications }
