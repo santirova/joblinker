@@ -5,48 +5,48 @@ require('dotenv').config()
 const secretKey = process.env.SECRET_KEY
 
 const postUserController = async (username, password, email, phone) => {
-  const hashPassword = await encrypt(password)
-  const newUser = new User({
-    username,
-    password: hashPassword,
-    email,
-    phone
-  })
-  await newUser.save()
+    const hashPassword = await encrypt(password)
+    const newUser = new User({
+        username,
+        password: hashPassword,
+        email,
+        phone
+    })
+    await newUser.save()
 
-  newUser.toObject({
-    transform: function (doc, ret) {
-      delete ret.password
-    }
-  })
+    newUser.toObject({
+        transform: function (doc, ret) {
+            delete ret.password
+        }
+    })
 
-  return newUser
+    return newUser
 }
 
 const loginController = async (email, password) => {
-  const user = await User.findOne({ email })
+    const user = await User.findOne({ email })
 
-  if (!user) {
-    return 'Usuario invalido'
-  }
-
-  const checkPassword = await compare(password, user.password)
-
-  if (checkPassword) {
-    const token = jwt.sign({ userId: user.id, email: user.email }, secretKey, {
-      expiresIn: '1h'
-    })
-    return {
-      token,
-      user
+    if (!user) {
+        return 'Usuario invalido'
     }
-  }
 
-  if (!checkPassword) {
-    return {
-      error: 'Contraseña incorrecta'
+    const checkPassword = await compare(password, user.password)
+
+    if (checkPassword) {
+        const token = jwt.sign({ userId: user.id, email: user.email }, secretKey, {
+            expiresIn: '1h'
+        })
+        return {
+            token,
+            user
+        }
     }
-  }
+
+    if (!checkPassword) {
+        return {
+            error: 'Contraseña incorrecta'
+        }
+    }
 }
 
 module.exports = { postUserController, loginController }

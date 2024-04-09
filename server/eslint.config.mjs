@@ -13,5 +13,12 @@ const compat = new FlatCompat({ baseDirectory: __dirname, recommendedConfig: plu
 export default [
   { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
   { languageOptions: { globals: globals.browser } },
-  ...compat.extends('standard')
+  ...compat.extends('standard'),
+  {
+    // Configurar la sangría con un tab
+    files: ['**/*.js'],
+    rules: {
+      indent: ['error', 4]
+    }
+  }
 ]
