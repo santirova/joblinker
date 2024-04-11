@@ -18,7 +18,7 @@ const deleteComment = async (userId, commentId) => {
             select: '_id'
         })
     if (comment.user._id.toString() === userId) {
-        await Comment.deleteOne({ _id: commentId })
+        await Comment.findByIdAndDelete(commentId)
         return 'successfully deleted'
     } else {
         return 'Wrong user, user must be the creator of the comment'
@@ -34,8 +34,8 @@ const updatedComment = async (userId, commentId, text) => {
             select: '_id'
         })
     if (comment.user._id.toString() === userId) {
-        await Comment.updateOne({ _id: commentId }, { text })
-        return 'Successfully updated'
+        const updatedComment = await Comment.findByIdAndUpdate(commentId, { text }, { returnDocument: 'after' })
+        return updatedComment
     } else {
         return 'Wrong user, user must be the creator of the comment'
     }

@@ -23,8 +23,28 @@ const updateApplication = async (userId, applicationId, data) => {
         const newApplication = await Application.findByIdAndUpdate(applicationId, data, { returnDocument: 'after' })
         return newApplication
     } else {
-        return 'Wrong user, user must be the creator of the application'
+        throw new Error('Wrong user, user must be the creator of the application')
     }
 }
 
-module.exports = { postApplication, updateApplication }
+const deleteApplication = async (userId, applicationId) => {
+    const application = await Application
+        .findOne({ _id: applicationId })
+        .populate({
+            path: 'user',
+            model: User,
+            select: '_id'
+        })
+    if (application.user._id.toString() === userId) {
+        await Application.findByIdAndDelete(applicationId)
+        return 'Successfully deleted'
+    } else {
+        throw new Error('Wrong user, user must be the creator of the application')
+    }
+}
+
+const getApplicationsByUser = async (userId) => {
+    const applications = Application.find({ user: userId })
+    return applications
+}
+module.exports = { postApplication, updateApplication, deleteApplication, getApplicationsByUser }

@@ -1,4 +1,4 @@
-const { postApplication, updateApplication } = require('../controllers/applicationsControllers')
+const { postApplication, updateApplication, deleteApplication, getApplicationsByUser } = require('../controllers/applicationsControllers')
 
 const postApplicationHandler = async (req, res) => {
     try {
@@ -26,7 +26,10 @@ const updateApplicationHandler = async (req, res) => {
 
 const deleteApplicationHandler = async (req, res) => {
     try {
-        res.send('aloha')
+        const { userId } = req.params
+        const { applicationId } = req.body
+        const deletedApplication = await deleteApplication(userId, applicationId)
+        res.send(deletedApplication)
     } catch (error) {
         res.status(500).send({ error: error.message })
     }
@@ -34,7 +37,9 @@ const deleteApplicationHandler = async (req, res) => {
 
 const getApplicationsByUserHandler = async (req, res) => {
     try {
-        res.send('aloha')
+        const { userId } = req.params
+        const applicationsByUser = await getApplicationsByUser(userId)
+        res.send(applicationsByUser)
     } catch (error) {
         res.status(500).send({ error: error.message })
     }
