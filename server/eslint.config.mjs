@@ -18,7 +18,8 @@ export default [
     // Configurar la sangría con un tab
     files: ['**/*.js'],
     rules: {
-      indent: ['error', 4]
+      indent: ['error', 4],
+      quotes: ['error', 'single']
     }
   }
 ]

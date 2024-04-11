@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
-const postulationSchema = new mongoose.Schema({
+const applicationSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
+    },
     link: {
         type: String,
         required: true
@@ -32,7 +36,7 @@ const postulationSchema = new mongoose.Schema({
         type: String
     },
     level: {
-        stype: String,
+        type: String,
         required: true
     },
     creatAt: {
@@ -41,4 +45,6 @@ const postulationSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Postulation', postulationSchema)
+const Application = mongoose.model('Application', applicationSchema)
+
+module.exports = { Application }
