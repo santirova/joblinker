@@ -1,17 +1,24 @@
 const { Publication } = require('../models/publications')
 const { User } = require('../models/users')
 const { Comment } = require('../models/comments')
+const cloudinary = require('../configs/cloudinary')
+const postPublication = async (user, text, file) => {
+    let image
 
-const postPublication = async (user, text) => {
+    if (file) {
+        image = await cloudinary.uploader.upload(file.path)
+    }
+
     const newPost = new Publication({
+        image: image && image.secure_url,
         user,
         text
     })
+
     await newPost.save()
 
     return newPost
 }
-
 const deletePublication = async (postId) => {
     await Publication.deleteOne({ _id: postId })
     return 'successfully deleted'

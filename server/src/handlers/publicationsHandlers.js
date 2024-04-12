@@ -3,7 +3,8 @@ const { postPublication, deletePublication, updatePublication, getAllPublication
 const postPublicationHandler = async (req, res) => {
     try {
         const { user, text } = req.body
-        const newPost = await postPublication(user, text)
+        const file = req.file
+        const newPost = await postPublication(user, text, file)
         res.send(newPost)
     } catch (error) {
         res.status(400).send({ error: error.message })
