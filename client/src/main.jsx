@@ -11,6 +11,9 @@ import ErrorPage from './errorPage';
 import Applications from './routes/applications';
 import Publications from './routes/publications';
 import Stats from './routes/stats';
+import Sign from './routes/signContainer';
+import SignInForm from './components/signInForm';
+import SignUpForm from './components/signUpForm';
 
 
 const router = createBrowserRouter([
@@ -32,17 +35,15 @@ const router = createBrowserRouter([
         element: <Stats/>,
       }
     ]
-    // children=[
-    //   {
-    //     path: "/postulaciones",
-    //     element: <Applications/>,
-    //   }
-    // ]
   },
-  // {
-  //   path:"/postulaciones",
-  //   element: <Applications/>
-  // }
+  {
+    path:"/signup",
+    element:<Sign component={<SignUpForm/>} />
+  },
+  {
+    path:'/signin',
+    element:<Sign component={<SignInForm/>} />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

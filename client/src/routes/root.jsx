@@ -1,24 +1,18 @@
-import {AppBar,Toolbar, Typography,Stack} from "@mui/material"
-import {Outlet } from "react-router-dom"
-import ButtonNavLink from "../components/buttonNavLink"
+import { Outlet } from "react-router-dom";
+import { Box, CssBaseline } from "@mui/material";
+import Footer from "../components/footer";
+import NavBar from "../components/navBar";
+
+
 export default function Root() {
   return (
-    <div>
-      <AppBar position="static">
-          <Toolbar>
-              <Typography variant="h6" component="div" flexGrow={1}>
-                  JobLinker
-              </Typography>
-              <Stack direction="row" spacing={2}>
-                <ButtonNavLink label={"Publicaciones"} to={"/publicaciones"}/>
-                <ButtonNavLink label={"Postulaciones"} to={"/postulaciones"}/>
-                <ButtonNavLink label={"Estadisticas"} to={"/estadisticas"}/>
-              </Stack>
-          </Toolbar>
-      </AppBar>
-      <div id="content">
-        <Outlet/>
-      </div>
-    </div>
-  )
+    <Box minHeight="100vh" display="flex" flexDirection="column">
+      <CssBaseline />
+      <NavBar />
+      <Box component="main" flexGrow={1} id="content">
+        <Outlet />
+      </Box>
+      <Footer />
+    </Box>
+  );
 }
