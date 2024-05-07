@@ -1,10 +1,12 @@
+// NavBar.jsx
+
 import { useState } from 'react';
 import { AppBar, Toolbar, Typography, Stack, IconButton, Container, Grid, Menu, MenuItem } from "@mui/material";
 import { NavLink } from 'react-router-dom';
 import { Menu as MenuIcon } from '@mui/icons-material';
-import ButtonNavLink from "./buttonNavLink";
+import ButtonNavLink from './buttonNavLink';
 
-export default function NavBar() {
+const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuOpen = (event) => {
@@ -16,16 +18,16 @@ export default function NavBar() {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="lg">
-        <Toolbar>
+    <AppBar position='sticky'> {/* Cambiado a posición fija */}
+      <Toolbar>
+        <Container maxWidth="lg">
           <Grid container alignItems="center" justifyContent="space-between">
-            <Grid item xs={8} md={4}>
+            <Grid item>
               <Typography variant="h6" component="div" fontFamily='Outfit, sans-serif' fontWeight='bold'>
                 JobLinker
               </Typography>
             </Grid>
-            <Grid item xs={4} md={8}>
+            <Grid item>
               <Stack direction="row" spacing={2} justifyContent="flex-end">
                 <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' } }}>
                   <ButtonNavLink label={"Publicaciones"} to={"/publicaciones"} />
@@ -52,8 +54,10 @@ export default function NavBar() {
               </Stack>
             </Grid>
           </Grid>
-        </Toolbar>
-      </Container>
+        </Container>
+      </Toolbar>
     </AppBar>
   );
-}
+};
+
+export default NavBar;

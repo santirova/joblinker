@@ -24,8 +24,9 @@ export const applicationsSlice = createSlice({
                 state.userApplications = action.payload;
             })
             .addCase(getUserApplications.rejected, (state, action) => {
+                console.log(action);
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.error;
             });
     },
 });
