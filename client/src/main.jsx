@@ -16,26 +16,13 @@ import SignInForm from './components/signInForm';
 import SignUpForm from './components/signUpForm';
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
+import LandingPage from './routes/landingPage';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root/>,
+    element: <LandingPage/>,
     errorElement:<ErrorPage/>,
-    children:[
-      {
-        path: "/postulaciones",
-        element: <Applications/>,
-      },
-      {
-        path: "/publicaciones",
-        element: <Publications/>,
-      },
-      {
-        path: "/estadisticas",
-        element: <Stats/>,
-      }
-    ]
   },
   {
     path:"/signup",
@@ -44,6 +31,24 @@ const router = createBrowserRouter([
   {
     path:'/signin',
     element:<Sign component={<SignInForm/>} />
+  },
+  {
+    path:"/home",
+    element:<Root/>,
+    children:[
+      {
+        path: "/home/postulaciones",
+        element: <Applications/>,
+      },
+      {
+        path: "/home/publicaciones",
+        element: <Publications/>,
+      },
+      {
+        path: "/home/estadisticas",
+        element: <Stats/>,
+      }
+    ]
   }
 ]);
 

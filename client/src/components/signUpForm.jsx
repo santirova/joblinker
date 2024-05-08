@@ -2,8 +2,16 @@ import { Button, Container, IconButton, TextField, Typography } from '@mui/mater
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { formStyles } from '../styles/formStyles';
+import { useDispatch, useSelector } from "react-redux";
+import { signUp } from '../redux/actions/userActions';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SignUpForm() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { error , loading } = useSelector((state) => state.user)
+
   const [formData, setFormData] = useState({
     email: '',
     username: '',
@@ -61,6 +69,23 @@ export default function SignUpForm() {
     );
   };
 
+  const onSubmit = async (data) =>{
+    const userInfo = {
+      username:data?.username,
+      email:data?.email,
+      phone:data?.phoneNumber,
+      password:data?.password,
+    }
+    try {
+      await dispatch(signUp(userInfo))
+        .unwrap()
+        .then(()=> navigate("/signin"))
+    } catch (error) {
+        console.log(error)
+    }
+      
+
+  }
   return (
     <Container 
       maxWidth="sm" 
@@ -147,12 +172,19 @@ export default function SignUpForm() {
         helperText={errors.phoneNumberError}
         style={{ marginBottom: '16px' }}
       />
-      <Button 
-        variant="contained" 
-        type="submit" 
-        disabled={!isFormValid()}
+      {error && (
+        <Typography variant="body2" color="error" style={{ marginBottom: '16px' }}>
+          {error}
+        </Typography>
+      )}
+       <Button
+        variant="contained"
+        type="submit"
+        disabled={!isFormValid() || loading}
+        onClick={()=> onSubmit(formData)}
+        style={{ position: 'relative' }}
       >
-        Registrarse
+        {loading ? 'Registrando...' : 'Registrarse'}
       </Button>
     </Container>
   );

@@ -15,7 +15,7 @@ import ApplicationItem from "../components/applicationItem";
 export default function Applications() {
   const dispatch = useDispatch();
   const id = "66105f2b85e75d4b48876abb";
-  const { error, pending, userApplications } = useSelector(
+  const { error, loading, userApplications } = useSelector(
     (state) => state.applications
   );
 
@@ -35,7 +35,7 @@ export default function Applications() {
           <Typography
             variant="h4"
             gutterBottom
-            style={{ fontFamily: "Roboto Condensed, sans-serif", color: "#333333" }}
+            style={{ fontFamily: "Outfit, sans-serif", color: "#333333" }}
           >
             Mis Postulaciones
           </Typography>
@@ -58,7 +58,11 @@ export default function Applications() {
             </Button>
           </Box>
         </Box>
-        {pending && <CircularProgress />}
+        <Box
+            sx={{ height: "100", width: '100%' }}
+          >
+            {loading && <CircularProgress />}
+          </Box>
         {error && (
           <Typography variant="body1" color="error">
             {error.message}

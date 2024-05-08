@@ -30,9 +30,9 @@ const NavBar = () => {
             <Grid item>
               <Stack direction="row" spacing={2} justifyContent="flex-end">
                 <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  <ButtonNavLink label={"Publicaciones"} to={"/publicaciones"} />
-                  <ButtonNavLink label={"Postulaciones"} to={"/postulaciones"} />
-                  <ButtonNavLink label={"Estadisticas"} to={"/estadisticas"} />
+                  <ButtonNavLink label={"Publicaciones"} to={"/home/publicaciones"} />
+                  <ButtonNavLink label={"Postulaciones"} to={"/home/postulaciones"} />
+                  <ButtonNavLink label={"Estadisticas"} to={"/home/estadisticas"} />
                 </Stack>
                 <IconButton
                   color="inherit"
