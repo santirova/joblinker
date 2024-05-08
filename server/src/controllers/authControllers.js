@@ -6,6 +6,11 @@ const { SECRET_KEY } = process.env
 
 const postUserController = async (username, password, email, phone) => {
     const hashPassword = await encrypt(password)
+    const user =await User.findOne({ email })
+    if (user) {
+        throw new Error('El email ya ha sido registrado anteriormente')
+        
+    }
     const newUser = new User({
         username,
         password: hashPassword,
