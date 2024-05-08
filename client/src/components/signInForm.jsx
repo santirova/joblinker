@@ -3,8 +3,14 @@ import { Button, Container, IconButton, TextField, Typography } from '@mui/mater
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { formStyles } from '../styles/formStyles';
+import { useDispatch, useSelector } from 'react-redux';
+import { signIn } from '../redux/actions/userActions';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignInForm() {
+  const navigate = useNavigate()
+  const { error, loading } = useSelector((state)=> state.user)
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -20,10 +26,19 @@ export default function SignInForm() {
     setFormData({ ...formData, showPassword: !formData.showPassword });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Aquí puedes enviar los datos del formulario a tu servidor para autenticación
     console.log(formData);
+
+    try {
+      console.log({email:formData.email,password:formData.password});
+      await dispatch(signIn({email:formData.email,password:formData.password}))
+        .unwrap()
+        .then(()=> navigate("/home"))
+    } catch (error) {
+      console.log('errrroooooooor');
+    }
   };
 
   const isFormValid = () => {
@@ -71,7 +86,16 @@ export default function SignInForm() {
         }}
         style={{ marginBottom: '16px' }}
       />
-      <Button variant="contained" type="submit" onClick={handleSubmit} disabled={!isFormValid()}>
+       {error && (
+        <Typography variant="body2" color="error" style={{ marginBottom: '16px' }}>
+          {error}
+        </Typography>
+      )}
+      <Button 
+        variant="contained" 
+        type="submit" 
+        onClick={handleSubmit} 
+        disabled={!isFormValid() || loading}>
         Iniciar Sesión
       </Button>
     </Container>
