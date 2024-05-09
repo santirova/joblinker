@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserApplications } from "../redux/actions/applicationsActions";
 import {
@@ -7,11 +7,12 @@ import {
   CircularProgress,
   Box,
   Button,
-  Grid
+  Grid,
 } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import ApplicationItem from "../components/applicationItem";
 import Filters from "../components/filter";
+import PaginationComp from "../components/paginationComp";
 
 export default function Applications() {
   const dispatch = useDispatch();
@@ -19,14 +20,22 @@ export default function Applications() {
   const { error, loading, userApplications } = useSelector(
     (state) => state.applications
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   useEffect(() => {
     if (!userApplications) {
       dispatch(getUserApplications(id));
-    }
-    
+    }  
   }, [dispatch]);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    };
+    
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const visibleApplications = userApplications?.slice(startIndex, startIndex + itemsPerPage);
+  
   return (
     <Box bgcolor="#F5F5F5" padding={2}>
       <Container maxWidth="lg">
@@ -60,13 +69,30 @@ export default function Applications() {
             {error.message}
           </Typography>
         )}
-        {userApplications &&
-          userApplications.map((application) => (
+        {visibleApplications &&
+          visibleApplications.map((application) => (
             <ApplicationItem
               key={application._id}
               application={application}
             />
           ))}
+          {visibleApplications &&
+            <PaginationComp
+            totalItems={userApplications?.length || 0}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+          }
+          {
+            !userApplications?.length &&
+            <Box display="flex" alignItems="center" justifyContent="center">
+              <Typography variant="h5" color="primart" fontFamily="Outfit, sansserif">
+                Todavia no tienes postulaciones
+              </Typography>
+            </Box>
+          }
+        
       </Container>
     </Box>
   );
