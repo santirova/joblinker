@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getUserApplications } from "../actions/applicationsActions";
 
 const initialState = {
-    userApplications:[],
+    userApplications:null,
     loading: false,
     error: null,
 }

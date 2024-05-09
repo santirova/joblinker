@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { signUp, signIn} from "../actions/userActions";
+import { signUp, signIn, getUserInfo} from "../actions/userActions";
 
 const initialState = {
-    userInfo:{},
+    userInfo:null,
     loading: false,
     error: null,
 }
@@ -15,6 +15,7 @@ export const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            //signUp
             .addCase(signUp.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -28,6 +29,7 @@ export const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
+            //signIn
             .addCase(signIn.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -38,6 +40,20 @@ export const userSlice = createSlice({
                 state.error = null;
             })
             .addCase(signIn.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            //userInfo
+            .addCase(getUserInfo.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserInfo.fulfilled, (state,action) => {
+                state.loading = false;
+                state.userInfo = action.payload
+                state.error = null;
+            })
+            .addCase(getUserInfo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

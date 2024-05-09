@@ -37,15 +37,15 @@ const router = createBrowserRouter([
     element:<Root/>,
     children:[
       {
-        path: "/home/postulaciones",
+        path: "postulaciones",
         element: <Applications/>,
       },
       {
-        path: "/home/publicaciones",
+        path: "publicaciones",
         element: <Publications/>,
       },
       {
-        path: "/home/estadisticas",
+        path: "estadisticas",
         element: <Stats/>,
       }
     ]

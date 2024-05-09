@@ -30,9 +30,9 @@ const NavBar = () => {
             <Grid item>
               <Stack direction="row" spacing={2} justifyContent="flex-end">
                 <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  <ButtonNavLink label={"Publicaciones"} to={"/home/publicaciones"} />
-                  <ButtonNavLink label={"Postulaciones"} to={"/home/postulaciones"} />
-                  <ButtonNavLink label={"Estadisticas"} to={"/home/estadisticas"} />
+                  <ButtonNavLink label={"Publicaciones"} to={"publicaciones"} />
+                  <ButtonNavLink label={"Postulaciones"} to={"postulaciones"} />
+                  <ButtonNavLink label={"Estadisticas"} to={"estadisticas"} />
                 </Stack>
                 <IconButton
                   color="inherit"
@@ -47,9 +47,9 @@ const NavBar = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
                 >
-                  <MenuItem component={NavLink} to={"/publicaciones"} onClick={handleMenuClose}>Publicaciones</MenuItem>
-                  <MenuItem component={NavLink} to={"/postulaciones"} onClick={handleMenuClose}>Postulaciones</MenuItem>
-                  <MenuItem component={NavLink} to={"/estadisticas"} onClick={handleMenuClose}>Estadisticas</MenuItem>
+                  <MenuItem component={NavLink} to={"publicaciones"} onClick={handleMenuClose}>Publicaciones</MenuItem>
+                  <MenuItem component={NavLink} to={"postulaciones"} onClick={handleMenuClose}>Postulaciones</MenuItem>
+                  <MenuItem component={NavLink} to={"estadisticas"} onClick={handleMenuClose}>Estadisticas</MenuItem>
                 </Menu>
               </Stack>
             </Grid>
