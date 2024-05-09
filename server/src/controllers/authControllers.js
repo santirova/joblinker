@@ -69,4 +69,9 @@ const resetPassword = async (newPassword, token) => {
     return { message: 'Password reset successful.' }
 }
 
-module.exports = { postUserController, loginController, forgotPasswordController, resetPassword }
+const getUserInfo = async (id) => {
+    const user = await User.findById(id)
+    return user
+}
+
+module.exports = { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo }

@@ -1,4 +1,4 @@
-const { postUserController, loginController, forgotPasswordController, resetPassword } = require('../controllers/authControllers')
+const { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo } = require('../controllers/authControllers')
 const { sendPasswordResetEmail, sendWelcomeEmail } = require('../utils/nodemailer')
 
 const postUserHandler = async (req, res) => {
@@ -15,8 +15,9 @@ const postUserHandler = async (req, res) => {
 const loginHandler = async (req, res) => {
     try {
         const { email, password } = req.body
-        const token = await loginController(email, password)
-        res.status(200).send(token)
+        const { token, user} = await loginController(email, password)
+        res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
+        res.status(200).send(user)
     } catch (error) {
         res.status(400).send({ error: error.message })
     }
@@ -43,4 +44,14 @@ const resetPasswordHandler = async (req, res) => {
         res.status(400).send({ error: error.message })
     }
 }
-module.exports = { postUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler }
+
+const getUserInfoHandler = async (req, res) => {
+    try {
+        const { id } = req.params
+        const userInfo = await getUserInfo(id);
+        res.status(200).send(userInfo)
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+}
+module.exports = { postUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler, getUserInfoHandler }
