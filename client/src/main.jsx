@@ -9,7 +9,6 @@ import {
 import Root from './routes/root';
 import ErrorPage from './errorPage';
 import Applications from './routes/applications';
-import Publications from './routes/publications';
 import Stats from './routes/stats';
 import Sign from './routes/signContainer';
 import SignInForm from './components/signInForm';
@@ -17,6 +16,7 @@ import SignUpForm from './components/signUpForm';
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import LandingPage from './routes/landingPage';
+import PublicationsContainer from './routes/publicationsContainer';
 
 const router = createBrowserRouter([
   {
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "publicaciones",
-        element: <Publications/>,
+        element: <PublicationsContainer/>,
       },
       {
         path: "estadisticas",
