@@ -27,7 +27,7 @@ export default function Applications() {
     if (!userApplications) {
       dispatch(getUserApplications(id));
     }  
-  }, [dispatch]);
+  }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);

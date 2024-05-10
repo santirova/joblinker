@@ -16,8 +16,7 @@ const loginHandler = async (req, res) => {
     try {
         const { email, password } = req.body
         const { token, user} = await loginController(email, password)
-        res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
-        res.status(200).send(user)
+        res.status(200).send({user,token})
     } catch (error) {
         res.status(400).send({ error: error.message })
     }
@@ -54,4 +53,18 @@ const getUserInfoHandler = async (req, res) => {
         res.status(400).send({ error: error.message })
     }
 }
+
+// const logoutHandler = async (req, res) => {
+//     try {
+//         res.cookie("token", 'none', {
+//             expires: new Date(Date.now() + 5 * 1000),
+//             httpOnly: true,
+//         })
+//         res
+//             .status(200)
+//             .json({ success: true, message: 'User logged out successfully' })
+//     } catch (error) {
+//         res.status(500).send({ error: "Error al cerrar sesión" });
+//     }
+// }
 module.exports = { postUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler, getUserInfoHandler }

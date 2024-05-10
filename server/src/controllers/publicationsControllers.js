@@ -37,6 +37,11 @@ const getAllPublications = async () => {
     const publications = await Publication
         .find()
         .populate({
+            path: 'user', // <- campo del usuario que deseamos poblar
+            select: 'username', // <- campos que deseamos traer del usuario
+            model: User
+        })
+        .populate({
             path: 'comments',
             populate: {
                 path: 'user', // <- campo del comentario que deseamos poblar
@@ -45,7 +50,9 @@ const getAllPublications = async () => {
             },
             model: Comment,
             select: 'text '
-        })
+        },
+
+    )
     return publications
 }
 

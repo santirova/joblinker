@@ -1,10 +1,9 @@
-// NavBar.jsx
-
 import { useState } from 'react';
 import { AppBar, Toolbar, Typography, Stack, IconButton, Container, Grid, Menu, MenuItem } from "@mui/material";
 import { NavLink } from 'react-router-dom';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import ButtonNavLink from './buttonNavLink';
+import ProfileIcon from './profileIcon';
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -18,7 +17,7 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar position='sticky'> {/* Cambiado a posición fija */}
+    <AppBar position='sticky'>
       <Toolbar>
         <Container maxWidth="lg">
           <Grid container alignItems="center" justifyContent="space-between">
@@ -30,10 +29,11 @@ const NavBar = () => {
             <Grid item>
               <Stack direction="row" spacing={2} justifyContent="flex-end">
                 <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' } }}>
-                  <ButtonNavLink label={"Publicaciones"} to={"publicaciones"} />
                   <ButtonNavLink label={"Postulaciones"} to={"postulaciones"} />
+                  <ButtonNavLink label={"Publicaciones"} to={"publicaciones"} />
                   <ButtonNavLink label={"Estadisticas"} to={"estadisticas"} />
                 </Stack>
+                <ProfileIcon/>
                 <IconButton
                   color="inherit"
                   aria-label="menu"
@@ -47,8 +47,8 @@ const NavBar = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
                 >
-                  <MenuItem component={NavLink} to={"publicaciones"} onClick={handleMenuClose}>Publicaciones</MenuItem>
                   <MenuItem component={NavLink} to={"postulaciones"} onClick={handleMenuClose}>Postulaciones</MenuItem>
+                  <MenuItem component={NavLink} to={"publicaciones"} onClick={handleMenuClose}>Publicaciones</MenuItem>
                   <MenuItem component={NavLink} to={"estadisticas"} onClick={handleMenuClose}>Estadisticas</MenuItem>
                 </Menu>
               </Stack>

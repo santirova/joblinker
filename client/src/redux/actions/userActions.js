@@ -24,10 +24,11 @@ export const signIn = createAsyncThunk(
   "type/signin",
   async (data,thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:4001/auth/login",data, {withCredentials:true});
+      const response = await axios.post("http://localhost:4001/auth/login",data);
       // Si deseas obtener algo de vuelta
-      localStorage.setItem('userId', response.data._id);
-      return response.data;
+      localStorage.setItem('userId', response.data.user._id);
+      localStorage.setItem('token', response.data.token);
+      return response.data.user;
     } catch (error) {
       // Manejar el error y devolverlo al estado
       if (error.response && error.response.data && error.response.data.error) {
