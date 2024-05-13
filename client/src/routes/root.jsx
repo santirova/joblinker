@@ -25,10 +25,10 @@ export default function Root() {
   }, [navigate]);
   
   return (
-    <Box minHeight="100vh" display="flex" flexDirection="column">
+    <Box minHeight="100vh" display="grid" gridTemplateRows="auto 1fr auto">
       <CssBaseline />
       <NavBar />
-      <Box component="main" flexGrow={1} id="content">
+      <Box component="main" id="content" bgcolor="whitesmoke" paddingBottom={0}>
         <Outlet />
       </Box>
       <Footer />

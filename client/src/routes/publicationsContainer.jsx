@@ -17,7 +17,7 @@ export default function PublicationsContainer() {
   }, [publications, dispatch]);
 
   return (
-    <Box bgcolor="#F5F5F5" padding={2}>
+    <Box bgcolor="whitesmoke" padding={2}>
       <Container maxWidth="lg">
         <Grid container justifyContent="space-between" alignItems="center" marginBottom={2}>
           <Grid item>

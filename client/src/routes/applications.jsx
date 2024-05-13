@@ -37,8 +37,8 @@ export default function Applications() {
   const visibleApplications = userApplications?.slice(startIndex, startIndex + itemsPerPage);
   
   return (
-    <Box bgcolor="#F5F5F5" padding={2}>
-      <Container maxWidth="lg">
+    <Box padding={2} >
+      <Container maxWidth="lg" sx={{ minHeight:400, paddingBottom:2}} >
         <Grid container alignItems="center" spacing={2} marginBottom={2}>
           <Grid item xs={20} sm={8}>
             <Typography
@@ -61,33 +61,37 @@ export default function Applications() {
           </Grid>
         </Grid>
         <Filters/>
-        <Box sx={{ height: "100", width: '100%' }}>
-          {loading && <CircularProgress />}
-        </Box>
+        {loading && <Box minHeight={200} display="flex" alignItems="center" justifyContent="center" bgcolor="whitesmoke">
+          <CircularProgress />
+        </Box>}
         {error && (
           <Typography variant="body1" color="error">
             {error.message}
           </Typography>
         )}
-        {visibleApplications &&
-          visibleApplications.map((application) => (
-            <ApplicationItem
-              key={application._id}
-              application={application}
-            />
-          ))}
-          {visibleApplications &&
+        {visibleApplications?.length ?
+          <Box>
+            {visibleApplications.map((application) => (
+              <ApplicationItem
+                key={application._id}
+                application={application}
+              />
+            ))}
+
             <PaginationComp
-            totalItems={userApplications?.length || 0}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-          }
+              totalItems={userApplications?.length}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </Box>
+          :
+          ""
+        }
           {
-            !userApplications?.length &&
-            <Box display="flex" alignItems="center" justifyContent="center">
-              <Typography variant="h5" color="primart" fontFamily="Outfit, sansserif">
+            !userApplications?.length && !loading &&
+            <Box minHeight={200} display="flex" alignItems="center" justifyContent="center" bgcolor="whitesmoke">
+              <Typography variant="h5" color="primary" fontFamily="Outfit, sansserif">
                 Todavia no tienes postulaciones
               </Typography>
             </Box>
