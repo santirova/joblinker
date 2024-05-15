@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserApplications } from "../actions/applicationsActions";
+import { getUserApplications, postApplication } from "../actions/applicationsActions";
 
 const initialState = {
     userApplications:null,
     loading: false,
     error: null,
+    postError:null,
 }
 
 export const applicationsSlice = createSlice({
@@ -27,6 +28,19 @@ export const applicationsSlice = createSlice({
                 console.log(action);
                 state.loading = false;
                 state.error = action.error;
+            })
+            .addCase(postApplication.pending, (state) => {
+                state.loading = true;
+                state.postError = null;
+            })
+            .addCase(postApplication.fulfilled, (state, action) => {
+                state.loading = false;
+                state.userApplications.unshift(action.payload);
+            })
+            .addCase(postApplication.rejected, (state, action) => {
+                console.log(action);
+                state.loading = false;
+                state.postError = action.error;
             });
     },
 });

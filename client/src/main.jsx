@@ -17,6 +17,7 @@ import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import LandingPage from './routes/landingPage';
 import PublicationsContainer from './routes/publicationsContainer';
+import ApplicationForm from './routes/applicationForm';
 
 const router = createBrowserRouter([
   {
@@ -37,15 +38,20 @@ const router = createBrowserRouter([
     element:<Root/>,
     children:[
       {
-        path: "postulaciones",
+        path: "/home/postulaciones",
         element: <Applications/>,
+        
       },
       {
-        path: "publicaciones",
+        path:"/home/postulaciones/agregar",
+        element:<ApplicationForm/>
+      },
+      {
+        path: "/home/publicaciones",
         element: <PublicationsContainer/>,
       },
       {
-        path: "estadisticas",
+        path: "/home/estadisticas",
         element: <Stats/>,
       }
     ]

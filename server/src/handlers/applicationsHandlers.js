@@ -6,7 +6,7 @@ const postApplicationHandler = async (req, res) => {
         const body = req.body
         body.user = userId
         const newApplication = await postApplication(body)
-        res.send(newApplication)
+        res.status(200).send(newApplication)
     } catch (error) {
         res.status(500).send({ error: error.message })
     }

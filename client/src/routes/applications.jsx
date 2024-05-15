@@ -13,6 +13,7 @@ import { Add as AddIcon } from "@mui/icons-material";
 import ApplicationItem from "../components/applicationItem";
 import Filters from "../components/filter";
 import PaginationComp from "../components/paginationComp";
+import { NavLink } from "react-router-dom";
 
 export default function Applications() {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ export default function Applications() {
     <Box padding={2} >
       <Container maxWidth="lg" sx={{ minHeight:400, paddingBottom:2}} >
         <Grid container alignItems="center" spacing={2} marginBottom={2}>
-          <Grid item xs={20} sm={8}>
+          <Grid item xs={12} sm={8}>
             <Typography
               variant="h4"
               style={{ fontFamily: "Outfit, sans-serif", color: "#333333" }}
@@ -48,9 +49,11 @@ export default function Applications() {
               Mis Postulaciones
             </Typography>
           </Grid>
-          <Grid item xs={201} sm={4}>
+          <Grid item xs={12} sm={4}>
             <Box display="flex" justifyContent="flex-end">
               <Button
+                component={NavLink}
+                to="agregar"
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
@@ -98,6 +101,7 @@ export default function Applications() {
           }
         
       </Container>
+
     </Box>
   );
 }

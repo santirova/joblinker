@@ -21,7 +21,7 @@ const ApplicationItem = ({ application }) => {
           <Box marginBottom={1}>
             <Typography variant="body2">
               <span style={{ fontWeight: 600 }}>Fecha de Creación:</span>{" "}
-              {new Date(application.createdAt).toLocaleDateString()}
+              {new Date(application.creatAt).toLocaleDateString()}
             </Typography>
           </Box>
           <Box marginBottom={1}>
