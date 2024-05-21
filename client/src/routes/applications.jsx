@@ -39,7 +39,7 @@ export default function Applications() {
   
   return (
     <Box padding={2} >
-      <Container maxWidth="lg" sx={{ minHeight:400, paddingBottom:2}} >
+      <Container maxWidth="sm" sx={{ minHeight:400, paddingBottom:2}} >
         <Grid container alignItems="center" spacing={2} marginBottom={2}>
           <Grid item xs={12} sm={8}>
             <Typography

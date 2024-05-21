@@ -1,14 +1,15 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Publication from "../components/publication";
 import { getPublications } from "../redux/actions/publicationsAcction";
+import CreatePublication from "../components/createPublication";
 
 export default function PublicationsContainer() {
   const dispatch = useDispatch();
   const { publications } = useSelector((state) => state.publications);
+
 
   useEffect(() => {
     if (!publications) {
@@ -16,19 +17,22 @@ export default function PublicationsContainer() {
     }
   }, [publications, dispatch]);
 
+
   return (
     <Box bgcolor="whitesmoke" padding={2}>
-      <Container maxWidth="lg">
-        <Grid container justifyContent="space-between" alignItems="center" marginBottom={2}>
-          <Grid item>
-            <Typography variant="h4" style={{ fontFamily: "Outfit, sans-serif", color: "#333333" }}>
+      <Container maxWidth="sm">
+        <Box display="flex" alignItems="start" mb={2}>
+          <Typography
+              variant="h4"
+              style={{ fontFamily: "Outfit, sans-serif", color: "#333333" }}
+            >
               Publicaciones
             </Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" color="primary" startIcon={<AddIcon />}>
-              Crear
-            </Button>
+        </Box>
+          
+        <Grid container justifyContent="center" marginBottom={2}>
+          <Grid item xs={12}>
+            <CreatePublication/>
           </Grid>
         </Grid>
         {publications &&

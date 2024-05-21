@@ -91,7 +91,7 @@ const ApplicationItem = ({ application }) => {
         borderRadius={4}
         padding={2}
         marginBottom={2}
-        boxShadow={1}
+        boxShadow={2}
       >
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={6}>

@@ -6,12 +6,27 @@ export const getPublications = createAsyncThunk(
     async () =>{  
         try {
             const response = await axios.get(`http://localhost:4001/post`);
-            return response.data; // Retorna los datos obtenidos de la API
+            return response.data;
         }
          catch (error) {
-            // Si hay un error, rechaza la promesa con el valor del error
             console.error('Error fetching user applications:', error.message);
             throw new Error('Error fetching user applications: ' + error.message);
         }
     }
 );
+
+export const postPublication = createAsyncThunk(
+    'post/publication',
+    async (postData, thunkAPI) => {  
+      try {
+        const response = await axios.post(`http://localhost:4001/post`, postData);
+        return response.data; 
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.error) {
+          return thunkAPI.rejectWithValue(error.response.data.error);
+        } else {
+          throw new Error('Error al enviar la publicación: ' + error.message);
+        }
+      }
+    }
+  );

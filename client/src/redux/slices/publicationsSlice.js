@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getPublications } from "../actions/publicationsAcction";
+import { getPublications,postPublication } from "../actions/publicationsAcction";
 
 
 const initialState = {
     publications:null,
     loading: false,
     error: null,
+    postError:null,
 }
 
 export const publicationsSlice = createSlice({
@@ -28,6 +29,18 @@ export const publicationsSlice = createSlice({
                 console.log(action);
                 state.loading = false;
                 state.error = action.error;
+            })
+            .addCase(postPublication.pending, (state) => {
+                state.loading = true;
+                state.postError = null;
+            })
+            .addCase(postPublication.fulfilled, (state, action) => {
+                state.loading = false;
+                state.publications.unshift(action.payload)
+            })
+            .addCase(postPublication.rejected, (state, action) => {
+                state.loading = false;
+                state.postError = action.error;
             });
     },
 });

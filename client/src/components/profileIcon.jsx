@@ -1,10 +1,12 @@
 import { Avatar, Box, IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileIcon() {
     const [anchorElUser, setAnchorElUser] = useState(null);
     const navigate = useNavigate()
+    const { userInfo } = useSelector(state => state.user);
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
@@ -20,12 +22,18 @@ export default function ProfileIcon() {
         handleCloseUserMenu()
         navigate('/')
     }
-
+    // sx={{width:32,height:32}}
     return (
         <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Aemy Sharp" src="/static/images/avatar/2.jpg" />
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        {userInfo?.photo ? (
+                            <Avatar src={userInfo.photo}  />
+                        ):(
+                            <Avatar >
+                                {userInfo?.username.charAt(0).toUpperCase()}
+                            </Avatar>
+                    )}
                 </IconButton>
                 </Tooltip>
                 <Menu

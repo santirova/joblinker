@@ -27,7 +27,7 @@ const NavBar = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Stack direction="row" spacing={2} justifyContent="flex-end">
+              <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-end">
                 <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' } }}>
                   <ButtonNavLink label={"Postulaciones"} to={"postulaciones"} />
                   <ButtonNavLink label={"Publicaciones"} to={"publicaciones"} />

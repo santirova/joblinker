@@ -1,6 +1,7 @@
-import { Box, Button, Divider, IconButton, TextField, Typography } from "@mui/material";
-import { AddCircleOutline as AddCommentIcon, ChatBubbleOutline as CommentIcon, FavoriteBorderOutlined as FavoriteIcon } from "@mui/icons-material";
+import { Box, Button, IconButton, TextField, Typography, Avatar, Divider } from "@mui/material";
+import { ChatBubbleOutline as CommentIcon, FavoriteBorderOutlined as FavoriteIcon } from "@mui/icons-material";
 import { useState } from "react";
+import { format } from "date-fns";
 
 const Publication = ({ publication }) => {
   const [commentsVisible, setCommentsVisible] = useState(false);
@@ -17,51 +18,66 @@ const Publication = ({ publication }) => {
     setCommentText("");
   };
 
+  const formattedDate = format(new Date(publication.createdAt), "dd/MM/yyyy HH:mm");
+
   return (
-    <Box bgcolor="white" padding={2} marginBottom={2}>
+    <Box bgcolor="whitesmoke" padding={2} marginY={2} borderRadius={2} border={1} borderColor="grey.300" boxShadow={2}>
       <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
-        <Box>
-          <Typography variant="h6" gutterBottom>
-            {publication.text}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Publicado por: {publication.user?.username}
-          </Typography>
+        <Box display="flex" >
+          <Avatar
+            src={publication.user?.photoUrl}
+            alt={publication.user?.username}
+            sx={{ width: 32, height: 32, fontSize: 16, mr:0 }}
+          >
+            {!publication.user?.photoUrl && publication.user?.username?.[0]}
+          </Avatar>
+          <Box ml={1}>
+            <Typography variant="h6" gutterBottom>
+              {publication.user?.username}
+            </Typography>
+          </Box>
         </Box>
-        <IconButton aria-label="Like">
+        <Typography variant="caption" color="textSecondary">
+          {formattedDate}
+        </Typography>
+      </Box>
+      <Divider/>
+      <Typography variant="body1" my={2}>
+        {publication.text}
+      </Typography>
+      {publication.image && (
+        <Box mb={2} style={{ textAlign: "center" }}>
+        <img
+          src={publication.image}
+          alt="Publicación"
+          style={{
+            width: "300px", // Establecer el ancho al 100%
+            height: "300px", // Mantener la proporción original de la imagen
+            borderRadius: "8px",
+            objectFit: "cover", // Ajustar la imagen para cubrir el contenedor sin deformarse
+            cursor:"pointer"
+          }}
+        />
+      </Box>
+      )}
+      <Box display="flex" alignItems="center" mt={2}>
+        <IconButton size="small" onClick={toggleCommentsVisibility}>
+          <CommentIcon />
+        </IconButton>
+        <IconButton aria-label="Like" size="small">
           <FavoriteIcon />
         </IconButton>
       </Box>
-      {publication.image && (
-        <Box mb={2}>
-          <img src={publication.image} alt="Publicación" style={{ maxWidth: "100%", borderRadius: "8px" }} />
-        </Box>
-      )}
-      <Divider />
       {commentsVisible && (
         <Box mt={2}>
-          <Typography variant="h6" gutterBottom>Comentarios:</Typography>
           {publication?.comments.map((comment) => (
             <Box key={comment._id} ml={2} mb={1}>
+              <Typography variant="h6">{comment.user?.username}</Typography>
               <Typography variant="body2">{comment.text}</Typography>
-              <Typography variant="caption">Comentado por: {comment.user.username}</Typography>
             </Box>
           ))}
         </Box>
       )}
-      <Box display="flex" alignItems="center" mt={2}>
-        <Button
-          startIcon={<CommentIcon />}
-          onClick={toggleCommentsVisibility}
-          color={commentsVisible ? "secondary" : "primary"}
-          size="small"
-        >
-          {commentsVisible ? "Ocultar comentarios" : "Ver comentarios"}
-        </Button>
-        <IconButton aria-label="Agregar comentario">
-          <AddCommentIcon />
-        </IconButton>
-      </Box>
       {commentsVisible && (
         <Box mt={2}>
           <TextField

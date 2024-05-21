@@ -38,12 +38,10 @@ const applicationSchema = new mongoose.Schema({
     level: {
         type: String,
         required: true
-    },
-    creatAt: {
-        type: Date,
-        default: Date.now
     }
-})
+    },
+    {timestamps:true}
+)
 
 const Application = mongoose.model('Application', applicationSchema)
 

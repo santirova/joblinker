@@ -9,8 +9,10 @@ const postSchema = new mongoose.Schema({
     user: { type: mongoose.Types.ObjectId, ref: 'User' },
     image: { type: String },
     likes: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
-    comments: [{ type: mongoose.Types.ObjectId, ref: 'Comment' }]
-})
+    comments: [{ type: mongoose.Types.ObjectId, ref: 'Comment' }],
+    },
+    {timestamps:true}
+)
 
 const Publication = mongoose.model('Publication', postSchema)
 

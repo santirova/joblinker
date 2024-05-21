@@ -17,7 +17,15 @@ const postPublication = async (user, text, file) => {
 
     await newPost.save()
 
-    return newPost
+    // Poblar la publicación recién creada con información de comentarios y usuarios de comentarios
+    const populatedPost = await Publication.findById(newPost._id)
+    .populate({
+        path: 'user', // <- campo del usuario que deseamos poblar
+        select: 'username', // <- campos que deseamos traer del usuario
+        model: User
+    })
+
+    return populatedPost;
 }
 const deletePublication = async (postId) => {
     await Publication.deleteOne({ _id: postId })
@@ -36,6 +44,7 @@ const updatePublication = async (_id, text) => {
 const getAllPublications = async () => {
     const publications = await Publication
         .find()
+        .sort({ createdAt: "desc" })
         .populate({
             path: 'user', // <- campo del usuario que deseamos poblar
             select: 'username', // <- campos que deseamos traer del usuario
