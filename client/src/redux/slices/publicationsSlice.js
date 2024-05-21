@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getPublications,postPublication } from "../actions/publicationsAcction";
+import { getPublications,postPublication,commentPublication } from "../actions/publicationsAcction";
 
 
 const initialState = {
-    publications:null,
+    publications:[],
     loading: false,
     error: null,
+    comError:null,
     postError:null,
 }
 
@@ -41,6 +42,25 @@ export const publicationsSlice = createSlice({
             .addCase(postPublication.rejected, (state, action) => {
                 state.loading = false;
                 state.postError = action.error;
+            })
+            .addCase(commentPublication.pending, (state) => {
+                state.loading = true;
+                state.postError = null;
+            })
+            .addCase(commentPublication.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log(action.payload);
+                const { publicationId, ...comment} = action.payload;
+                const publication = state.publications.find((pub) => pub._id === publicationId);
+                console.log(publication);
+                if (publication) {
+                    publication.comments.push(comment);
+                }
+    
+            })
+            .addCase(commentPublication.rejected, (state, action) => {
+                state.loading = false;
+                state.comError = action.error;
             });
     },
 });

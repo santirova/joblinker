@@ -2,24 +2,31 @@ import { Box, Button, IconButton, TextField, Typography, Avatar, Divider } from 
 import { ChatBubbleOutline as CommentIcon, FavoriteBorderOutlined as FavoriteIcon } from "@mui/icons-material";
 import { useState } from "react";
 import { format } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
+import { commentPublication } from "../redux/actions/publicationsAcction";
+
 
 const Publication = ({ publication }) => {
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [commentText, setCommentText] = useState("");
-
-  const toggleCommentsVisibility = () => {
+  const _id = useSelector(state => state.user.userInfo?._id)
+  const dispatch = useDispatch()
+  const toggleCommentsVisibility =  () => {
     setCommentsVisible(!commentsVisible);
   };
 
-  const handleCommentSubmit = () => {
-    // Aquí iría la lógica para enviar el comentario al backend
-    console.log("Comentario enviado:", commentText);
-    // Limpia el campo de texto después de enviar el comentario
+  const handleCommentSubmit = async () => {
+    console.log('aloha');
+    const data = {
+      userId:_id,
+      text:commentText,
+      postId:publication?._id
+    }
+    await dispatch(commentPublication(data)).unwrap()
     setCommentText("");
   };
 
   const formattedDate = format(new Date(publication.createdAt), "dd/MM/yyyy HH:mm");
-
   return (
     <Box bgcolor="whitesmoke" padding={2} marginY={2} borderRadius={2} border={1} borderColor="grey.300" boxShadow={2}>
       <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
@@ -29,7 +36,7 @@ const Publication = ({ publication }) => {
             alt={publication.user?.username}
             sx={{ width: 32, height: 32, fontSize: 16, mr:0 }}
           >
-            {!publication.user?.photoUrl && publication.user?.username?.[0]}
+            {!publication.user?.photoUrl && publication.user?.username?.[0].toUpperCase()}
           </Avatar>
           <Box ml={1}>
             <Typography variant="h6" gutterBottom>
@@ -61,12 +68,18 @@ const Publication = ({ publication }) => {
       </Box>
       )}
       <Box display="flex" alignItems="center" mt={2}>
-        <IconButton size="small" onClick={toggleCommentsVisibility}>
+      <IconButton size="small" onClick={toggleCommentsVisibility}>
           <CommentIcon />
         </IconButton>
+        <Typography variant="body2" ml={1}>
+          {publication.comments.length}
+        </Typography>
         <IconButton aria-label="Like" size="small">
           <FavoriteIcon />
         </IconButton>
+        <Typography variant="body2" ml={1}>
+          {publication.likes.length}
+        </Typography>
       </Box>
       {commentsVisible && (
         <Box mt={2}>

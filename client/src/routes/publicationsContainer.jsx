@@ -12,11 +12,11 @@ export default function PublicationsContainer() {
 
 
   useEffect(() => {
-    if (!publications) {
+    if (publications.length === 0) {
       dispatch(getPublications());
     }
-  }, [publications, dispatch]);
-
+    console.log('useeffect del publiContainer')
+  }, [dispatch, publications.length]);
 
   return (
     <Box bgcolor="whitesmoke" padding={2}>

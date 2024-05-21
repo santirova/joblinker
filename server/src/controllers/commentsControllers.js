@@ -6,7 +6,14 @@ const postComment = async (user, text, postId) => {
     const newComment = new Comment({ text, user, postId })
     const savedComment = await newComment.save()
     await Publication.findByIdAndUpdate(postId, { $push: { comments: savedComment._id } })
-    return savedComment
+    const comment = await Comment
+        .findById(savedComment._id)
+        .populate({
+            path: 'user',
+            model: User,
+            select: '_id, username'
+        })
+    return comment
 }
 
 const deleteComment = async (userId, commentId) => {
@@ -33,6 +40,7 @@ const updatedComment = async (userId, commentId, text) => {
             model: User,
             select: '_id'
         })
+       
     if (comment.user._id.toString() === userId) {
         const updatedComment = await Comment.findByIdAndUpdate(commentId, { text }, { returnDocument: 'after' })
         return updatedComment

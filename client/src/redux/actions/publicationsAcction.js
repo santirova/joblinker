@@ -30,3 +30,20 @@ export const postPublication = createAsyncThunk(
       }
     }
   );
+  export const commentPublication = createAsyncThunk(
+    'post/comment',
+    async (postData, thunkAPI) => {  
+      const { userId , ...data} = postData
+      const publicationId = data.postId
+      try {
+        const response = await axios.post(`http://localhost:4001/comment/${userId}`, data);
+        return {publicationId, ...response.data} 
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.error) {
+          return thunkAPI.rejectWithValue(error.response.data.error);
+        } else {
+          throw new Error('Error al enviar la publicación: ' + error.message);
+        }
+      }
+    }
+  );
