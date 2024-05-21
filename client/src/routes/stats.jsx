@@ -6,7 +6,7 @@ import BasicPie from "../components/charts/pieChart";
 
 export default function Stats() {
   return (
-    <Box bgcolor="#F5F5F5" padding={2} height="100%">
+    <Box bgcolor="#F5F5F5" padding={2} minHeight="100vh">
       <Container  maxWidth="lg">
         <Grid container spacing={1} >
           <Grid item xs={12} md={6}>

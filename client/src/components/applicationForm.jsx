@@ -90,7 +90,7 @@ const ApplicationForm = () => {
   };
 
   return (
-    <Box bgcolor="whitesmoke" p={2}>
+    <Box bgcolor="whitesmoke" p={2} minHeight="100vh">
       <Container maxWidth="lg">
         <Box pb={2} display="flex" alignItems="center" justifyContent="start">
           <Tooltip title="Volver">
