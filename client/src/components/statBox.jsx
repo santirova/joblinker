@@ -1,30 +1,23 @@
-import { Box, Typography } from "@mui/material";
+import {  Typography, Paper } from "@mui/material";
 
-
-export default function StatBox({title,subtitle}) {
+export default function StatBox({ title, subtitle, backgroundColor }) {
   return (
-    <Box width="100%" m="0 30px" border="solid 1">
-        <Box display="flex" justifyContent="space-between">
-            <Box >
-                <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                >
-                    {title}
-                </Typography>
-            </Box>
-        </Box>
-        <Box display="flex" justifyContent="space-between">
-            <Box >
-                <Typography
-                    variant="h5"
-                    fontWeight="bold"
-                >
-                    {subtitle}
-                </Typography>
-            </Box>
-        </Box>
-        
-    </Box>
-  )
+    <Paper
+      sx={{
+        padding: 2,
+        borderRadius: 2,
+        backgroundColor,
+        color: "#FFF",
+        textAlign: "center",
+        boxShadow: 3,
+      }}
+    >
+      <Typography variant="h6" fontWeight="bold">
+        {title}
+      </Typography>
+      <Typography variant="h4" fontWeight="bold">
+        {subtitle}
+      </Typography>
+    </Paper>
+  );
 }

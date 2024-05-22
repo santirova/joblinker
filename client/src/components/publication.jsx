@@ -63,7 +63,7 @@ const Publication = ({ publication }) => {
               src={publication.image}
               alt="Publicación"
               style={{
-                width: "100%",
+                width: "60%",
                 height: "200px", // Establece una altura fija para todas las imágenes
                 borderRadius: "8px",
                 objectFit: "cover",

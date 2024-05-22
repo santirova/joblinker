@@ -15,16 +15,9 @@ export default function PublicationsContainer() {
     }
   }, [dispatch, publications.length]);
 
-  if ( loading ){
-    return(
-      <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center" bgcolor="whitesmoke">
-      <CircularProgress size={8} />
-      </Box>
-    )
-  }
   return (
-    <Box bgcolor="whitesmoke" padding={2} overflow="hidden">
-      <Container maxWidth="md">
+    <Box bgcolor="whitesmoke" padding={2} overflow="hidden" minHeight="100vh">
+      <Container maxWidth="lg" style={{minHeight:"100vh"}}>
         <Box display="flex" alignItems="start" mb={2}>
           <Typography
             variant="h4"
@@ -38,6 +31,12 @@ export default function PublicationsContainer() {
             <CreatePublication />
           </Grid>
         </Grid>
+        {
+          loading && 
+            <Box minHeight="100%" display="flex" alignItems="center" justifyContent="center" bgcolor="whitesmoke">
+              <CircularProgress />
+            </Box>
+        }
         {publications &&
           publications.map((publication) => (
             <Publication key={publication._id} publication={publication} />
