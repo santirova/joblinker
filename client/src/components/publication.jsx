@@ -3,13 +3,14 @@ import { ChatBubbleOutline as CommentIcon, FavoriteBorderOutlined as FavoriteIco
 import { useState } from "react";
 import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import { commentPublication } from "../redux/actions/publicationsAcction";
+import { commentPublication, deleteLike, likePublication } from "../redux/actions/publicationsAcction";
 
 const Publication = ({ publication }) => {
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const _id = useSelector(state => state.user.userInfo?._id);
+  const [isLiked, setLiked] = useState( publication.likes.find((id) => id === _id))
   const dispatch = useDispatch();
 
   const toggleCommentsVisibility = () => {
@@ -25,6 +26,25 @@ const Publication = ({ publication }) => {
     await dispatch(commentPublication(data)).unwrap();
     setCommentText("");
   };
+
+  const handleLikeSumbit = async () => {
+    if (!isLiked) {
+      const data = {
+        userId: _id,
+        postId: publication?._id
+      }
+      await dispatch(likePublication(data)).unwrap()
+      setLiked(true)
+    }else{
+      const data = {
+        userId: _id,
+        postId: publication?._id
+      }
+      await dispatch(deleteLike(data)).unwrap()
+      setLiked(false)
+    }
+    
+  }
 
   const formattedDate = format(new Date(publication.createdAt), "dd/MM/yyyy");
 
@@ -44,7 +64,7 @@ const Publication = ({ publication }) => {
               {!publication.user?.photoUrl && publication.user?.username?.[0].toUpperCase()}
             </Avatar>
             <Box ml={1}>
-              <Typography variant="subtitle1" gutterBottom noWrap>
+              <Typography variant="subtitle1" fontWeight="bold" gutterBottom noWrap>
                 {publication.user?.username}
               </Typography>
             </Box>
@@ -81,7 +101,7 @@ const Publication = ({ publication }) => {
           <Typography variant="body2" ml={1}>
             {publication.comments.length}
           </Typography>
-          <IconButton aria-label="Like" size="small">
+          <IconButton size="small" color={isLiked ? 'secondary' : ''} onClick={handleLikeSumbit}>
             <FavoriteIcon />
           </IconButton>
           <Typography variant="body2" ml={1}>
@@ -89,10 +109,12 @@ const Publication = ({ publication }) => {
           </Typography>
         </Box>
         {commentsVisible && (
+          
           <Box mt={2}>
+            <Divider sx={{mb:2}}/>
             {publication?.comments.map((comment) => (
-              <Box key={comment._id} ml={2} mb={1}>
-                <Typography variant="h6">{comment.user?.username}</Typography>
+              <Box key={comment._id} ml={1} mb={1}>
+                <Typography variant="subtitle2" fontWeight="bold">{comment.user?.username}</Typography>
                 <Typography variant="body2">{comment.text}</Typography>
               </Box>
             ))}

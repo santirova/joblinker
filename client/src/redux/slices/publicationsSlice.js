@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getPublications,postPublication,commentPublication } from "../actions/publicationsAcction";
+import { getPublications,postPublication,commentPublication, likePublication, deleteLike } from "../actions/publicationsAcction";
 
 
 const initialState = {
@@ -8,6 +8,7 @@ const initialState = {
     error: null,
     comError:null,
     postError:null,
+    likeErr:null,
 }
 
 export const publicationsSlice = createSlice({
@@ -45,7 +46,7 @@ export const publicationsSlice = createSlice({
             })
             .addCase(commentPublication.pending, (state) => {
                 state.loading = true;
-                state.postError = null;
+                state.comError = null;
             })
             .addCase(commentPublication.fulfilled, (state, action) => {
                 state.loading = false;
@@ -61,6 +62,35 @@ export const publicationsSlice = createSlice({
             .addCase(commentPublication.rejected, (state, action) => {
                 state.loading = false;
                 state.comError = action.error;
+            })
+            .addCase(likePublication.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log(action.payload);
+                const { publicationId, userId } = action.payload;
+                const publication = state.publications.find((pub) => pub._id === publicationId);
+                if (publication) {
+                    // Asegúrate de que el userId no está ya en los likes (esto puede ser redundante si ya lo verificas en el backend)
+                    if (!publication.likes.includes(userId)) {
+                        publication.likes.push(userId);
+                    }
+                }
+            })
+            .addCase(likePublication.rejected, (state, action) => {
+                state.loading = false;
+                state.likeErr = action.error;
+            })
+            .addCase(deleteLike.fulfilled, (state, action) => {
+                state.loading = false;
+                const { publicationId, userId } = action.payload; // Cambié esto para que la desestructuración sea correcta
+                const publication = state.publications.find((pub) => pub._id === publicationId);
+                if (publication) {
+                    // Actualiza el array de likes dentro de la publicación encontrada
+                    publication.likes = publication.likes.filter(id => id !== userId);
+                }
+            })
+            .addCase(deleteLike.rejected, (state, action) => {
+                state.loading = false;
+                state.likeErr = action.error;
             });
     },
 });
