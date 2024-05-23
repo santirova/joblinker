@@ -8,38 +8,63 @@ import {
   Box,
   Button,
   Grid,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
 } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
+import { Add as AddIcon, Close as CloseIcon } from "@mui/icons-material";
 import ApplicationItem from "../components/applicationItem";
 import Filters from "../components/filter";
 import PaginationComp from "../components/paginationComp";
-import { NavLink } from "react-router-dom";
+import ApplicationForm from "../components/applicationForm";
 
 export default function Applications() {
   const dispatch = useDispatch();
-  const id = localStorage.getItem('userId')
-  const { error, loading, userApplications } = useSelector(
+  const id = localStorage.getItem('userId');
+  const { error, loading, filteredApplications, userApplications } = useSelector(
     (state) => state.applications
   );
   const [currentPage, setCurrentPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedApplication, setSelectedApplication] = useState(null);
   const itemsPerPage = 8;
 
   useEffect(() => {
     if (!userApplications) {
       dispatch(getUserApplications(id));
-    }  
-  }, []);
+    }
+  }, [dispatch, id]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    };
-    
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleEditOpen = (application) => {
+    setSelectedApplication(application);
+    setEditOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+    setSelectedApplication(null);
+  };
+
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const visibleApplications = userApplications?.slice(startIndex, startIndex + itemsPerPage);
-  
+  const visibleApplications = (filteredApplications ? filteredApplications : userApplications)?.slice(startIndex, startIndex + itemsPerPage);
+
   return (
-    <Box bgcolor="whitesmoke" padding={2} >
-      <Container maxWidth="lg" sx={{ minHeight:400, paddingBottom:2}} >
+    <Box bgcolor="whitesmoke" padding={2}>
+      <Container maxWidth="lg" sx={{ minHeight: "100vh", paddingBottom: 2 }}>
         <Grid container alignItems="center" spacing={2} marginBottom={2}>
           <Grid item xs={12} sm={8}>
             <Typography
@@ -52,56 +77,95 @@ export default function Applications() {
           <Grid item xs={12} sm={4}>
             <Box display="flex" justifyContent="flex-end">
               <Button
-                component={NavLink}
-                to="agregar"
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
+                onClick={handleClickOpen}
               >
                 Agregar
               </Button>
             </Box>
           </Grid>
         </Grid>
-        <Filters/>
-        {loading && <Box minHeight={200} display="flex" alignItems="center" justifyContent="center" bgcolor="whitesmoke">
-          <CircularProgress />
-        </Box>}
+        <Filters />
+        {loading && !filteredApplications && (
+          <Box
+            minHeight={200}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bgcolor="whitesmoke"
+          >
+            <CircularProgress />
+          </Box>
+        )}
         {error && (
           <Typography variant="body1" color="error">
             {error.message}
           </Typography>
         )}
-        {visibleApplications?.length ?
+        {visibleApplications?.length ? (
           <Box>
             {visibleApplications.map((application) => (
-              <ApplicationItem
-                key={application._id}
-                application={application}
-              />
+              <ApplicationItem key={application._id} application={application} onEdit={handleEditOpen} />
             ))}
 
             <PaginationComp
-              totalItems={userApplications?.length}
+              totalItems={filteredApplications ? filteredApplications.length : userApplications.length}
               itemsPerPage={itemsPerPage}
               currentPage={currentPage}
               onPageChange={handlePageChange}
             />
           </Box>
-          :
+        ) : (
           ""
-        }
-          {
-            !userApplications?.length && !loading &&
-            <Box minHeight={200} display="flex" alignItems="center" justifyContent="center" bgcolor="whitesmoke">
-              <Typography variant="h5" color="primary" fontFamily="Outfit, sansserif">
-                Todavia no tienes postulaciones
-              </Typography>
-            </Box>
-          }
-        
-      </Container>
+        )}
+        {filteredApplications && !filteredApplications.length && !loading && (
+          <Box
+            minHeight={200}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bgcolor="whitesmoke"
+          >
+            <Typography variant="h5" color="primary" fontFamily="Outfit, sansserif">
+              No se encontraron resultados para los filtros aplicados
+            </Typography>
+          </Box>
+        )}
 
+        <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+          <DialogTitle>
+            Crear Postulación
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{ position: 'absolute', right: 8, top: 8, color: (theme) => theme.palette.grey[500] }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent>
+            <ApplicationForm handleClose={handleClose} />
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={editOpen} onClose={handleEditClose} maxWidth="md" fullWidth>
+          <DialogTitle>
+            Editar Postulación
+            <IconButton
+              aria-label="close"
+              onClick={handleEditClose}
+              sx={{ position: 'absolute', right: 8, top: 8, color: (theme) => theme.palette.grey[500] }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent>
+            <ApplicationForm handleClose={handleEditClose} initialData={selectedApplication} isEditMode={true} />
+          </DialogContent>
+        </Dialog>
+      </Container>
     </Box>
   );
 }

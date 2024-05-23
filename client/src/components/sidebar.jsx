@@ -55,7 +55,7 @@ const Sidebar = () => {
             {!isMobile && <ListItemText primary="Estadísticas" />}
           </ListItemButton>
           <Divider />
-          <ListItemButton onClick={() => navigate('/profile')}>
+          <ListItemButton onClick={() => navigate('/home/perfil')}>
             <ListItemIcon><Person /></ListItemIcon>
             {!isMobile && <ListItemText primary="Mi perfil" />}
           </ListItemButton>

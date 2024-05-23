@@ -44,7 +44,7 @@ const deleteApplication = async (userId, applicationId) => {
 }
 
 const getApplicationsByUser = async (userId) => {
-    const applications = Application.find({ user: userId })
+    const applications = await Application.find({ user: userId })
     return applications
 }
 module.exports = { postApplication, updateApplication, deleteApplication, getApplicationsByUser }

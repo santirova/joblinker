@@ -1,14 +1,12 @@
-import { ArrowBack } from "@mui/icons-material";
-import { Autocomplete, Box, Button, Container, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip, Typography, Chip } from "@mui/material";
+import { Autocomplete, Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Chip } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserApplications, postApplication } from "../redux/actions/applicationsActions";
+import { postApplication } from "../redux/actions/applicationsActions"; 
 
-const ApplicationForm = () => {
+const ApplicationForm = ({ handleClose, initialData = null, isEditMode = false }) => {
   const userId = localStorage.getItem('userId');
   const dispatch = useDispatch();
-  const { postError, loading, userApplications } = useSelector((state) => state.applications);
+  const { postError, loading } = useSelector((state) => state.applications);
   const [formData, setFormData] = useState({
     link: "",
     origin: "",
@@ -16,15 +14,16 @@ const ApplicationForm = () => {
     technologies: [],
     company: "",
     note: "",
-    level: ""
+    level: "",
+    status: ""
   });
   const [isValid, setIsValid] = useState(false);
 
-  useEffect(()=>{
-    if (!userApplications) {
-      dispatch(getUserApplications(userId))
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
     }
-  },[userApplications])
+  }, [initialData]);
 
   useEffect(() => {
     validateForm();
@@ -46,8 +45,8 @@ const ApplicationForm = () => {
   };
 
   const validateForm = () => {
-    const { link, origin, position, technologies, company, note, level } = formData;
-    if (link && origin && position && technologies.length && company && note && level) {
+    const { link, origin, position, technologies, company, level } = formData;
+    if (link && origin && position && technologies.length && company && level) {
       setIsValid(true);
     } else {
       setIsValid(false);
@@ -61,10 +60,14 @@ const ApplicationForm = () => {
       id: userId,
       formData
     };
-    console.log(data);
-    await dispatch(postApplication(data)).unwrap();
+    if (isEditMode) {
+      console.log(data)
+      // await dispatch(updateApplication({ id: initialData._id, data })).unwrap();
+    } else {
+      delete data.formData.status
+      await dispatch(postApplication(data)).unwrap();
+    }
 
-    // Limpia los campos después de enviar la solicitud
     setFormData({
       link: "",
       origin: "",
@@ -72,34 +75,22 @@ const ApplicationForm = () => {
       technologies: [],
       company: "",
       note: "",
-      level: ""
+      level: "",
+      status: ""
     });
-    
+
+    handleClose();
   };
 
-  // Opciones para el select de tecnologías
   const techOptions = [
     "JavaScript", "Python", "Java", "C#", "PHP", "C++", "TypeScript", "Ruby", "Swift", "Kotlin",
     "React", "Angular", "Vue.js", "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "ASP.NET",
     "jQuery", "Bootstrap", "Tailwind CSS", "Sass", "Less", "MySQL", "PostgreSQL", "MongoDB", "SQLite", "Firebase"
   ];
 
-  const navigate = useNavigate();
-  const handleBack = () => {
-    navigate('/home/postulaciones');
-  };
-
   return (
-    <Box bgcolor="whitesmoke" p={2} minHeight="100vh">
+    <Box p={2}>
       <Container maxWidth="lg">
-        <Box pb={2} display="flex" alignItems="center" justifyContent="start">
-          <Tooltip title="Volver">
-            <IconButton sx={{ marginRight: 2 }} onClick={handleBack}>
-              <ArrowBack />
-            </IconButton>
-          </Tooltip>
-          <Typography variant="h4" fontFamily="Outfit, sans-serif">Crear Postulación</Typography>
-        </Box>
         <form onSubmit={handleFormSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -145,29 +136,29 @@ const ApplicationForm = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-            <Autocomplete
-              multiple
-              name="technologies"
-              options={techOptions}
-              getOptionLabel={(option) => option}
-              onChange={handleTechnologiesChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Tecnologías"
-                  variant="outlined"
-                  fullWidth
-                />
-              )}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => {
-                  // eslint-disable-next-line no-unused-vars
-                  const { key, ...tagProps } = getTagProps({ index });
-                  return <Chip key={index} label={option} {...tagProps} />;
-                })
-              }
-            />
-
+              <Autocomplete
+                multiple
+                name="technologies"
+                options={techOptions}
+                getOptionLabel={(option) => option}
+                value={formData.technologies}
+                onChange={handleTechnologiesChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Tecnologías"
+                    variant="outlined"
+                    fullWidth
+                  />
+                )}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => {
+                    // eslint-disable-next-line no-unused-vars
+                    const { key, ...tagProps } = getTagProps({ index });
+                    return <Chip key={index} label={option} {...tagProps} />;
+                  })
+                }
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -200,15 +191,32 @@ const ApplicationForm = () => {
                   onChange={handleInputChange}
                   label="Nivel"
                 >
-                  <MenuItem value="Trainee">Trainee</MenuItem>
                   <MenuItem value="Junior">Junior</MenuItem>
                   <MenuItem value="Semisenior">Semisenior</MenuItem>
                   <MenuItem value="Senior">Senior</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
+            {isEditMode && (
+              <Grid item xs={12}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Estado</InputLabel>
+                  <Select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleInputChange}
+                    label="Estado"
+                  >
+                    <MenuItem value="Pendiente">Pendiente</MenuItem>
+                    <MenuItem value="Entrevista">Entrevista</MenuItem>
+                    <MenuItem value="Ofrecido">Ofrecido</MenuItem>
+                    <MenuItem value="Rechazado">Rechazado</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" disabled={!isValid}>{loading ? "Enviando" : "Enviar"}</Button>
+              <Button type="submit" variant="contained" color="primary" disabled={!isValid}>{loading ? "Enviando" : isEditMode ? "Guardar Cambios" : "Enviar"}</Button>
             </Grid>
           </Grid>
         </form>

@@ -17,6 +17,7 @@ import { store } from './redux/store';
 import LandingPage from './routes/landingPage';
 import PublicationsContainer from './routes/publicationsContainer';
 import ApplicationForm from './components/applicationForm';
+import ProfileView from './routes/profileView';
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/home/estadisticas",
         element: <Stats />,
-      }
+      },{
+        path: "/home/perfil",
+        element: <ProfileView />,
+      },
     ]
   }
 ]);
