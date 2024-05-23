@@ -5,6 +5,7 @@ import { getPublications,postPublication,commentPublication, likePublication, de
 const initialState = {
     publications:[],
     loading: false,
+    postLoading:false,
     error: null,
     comError:null,
     postError:null,
@@ -33,15 +34,15 @@ export const publicationsSlice = createSlice({
                 state.error = action.error;
             })
             .addCase(postPublication.pending, (state) => {
-                state.loading = true;
+                state.postLoading = true;
                 state.postError = null;
             })
             .addCase(postPublication.fulfilled, (state, action) => {
-                state.loading = false;
+                state.postLoading = false;
                 state.publications.unshift(action.payload)
             })
             .addCase(postPublication.rejected, (state, action) => {
-                state.loading = false;
+                state.postLoading = false;
                 state.postError = action.error;
             })
             .addCase(commentPublication.pending, (state) => {

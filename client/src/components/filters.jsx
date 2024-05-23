@@ -36,7 +36,7 @@ const Filters = () => {
             <Divider textAlign="center">Filtros y ordenamientos</Divider>
             <Grid mb={2} container spacing={2} alignItems="center">
                 <Grid item xs={12} md={4}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth sx={{bgcolor:"#FFF", boxShadow:2}}>
                         <InputLabel id="level-select-label">Nivel</InputLabel>
                         <Select
                             labelId="level-select-label"
@@ -53,7 +53,7 @@ const Filters = () => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth sx={{bgcolor:"#FFF", boxShadow:2}}>
                         <InputLabel id="position-select-label">Posición</InputLabel>
                         <Select
                             labelId="position-select-label"
@@ -75,7 +75,7 @@ const Filters = () => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth sx={{bgcolor:"#FFF", boxShadow:2}}>
                         <InputLabel id="order-by-select-label">Ordenar por</InputLabel>
                         <Select
                             labelId="order-by-select-label"

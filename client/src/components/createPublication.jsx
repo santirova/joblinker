@@ -8,30 +8,23 @@ import { postPublication } from "../redux/actions/publicationsAcction";
 export default function CreatePublication() {
   const [newPostText, setNewPostText] = useState("");
   const [image, setImage] = useState(null);
-  const [isPosting, setIsPosting] = useState(false); // Nuevo estado para el estado de publicación
+  const { postLoading } = useSelector(state => state.publications)
   const { userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const handleCreatePost = async () => {
     try {
-      setIsPosting(true); // Establecer el estado de publicación en verdadero cuando se hace clic en el botón
-
       const formData = new FormData();
       formData.append('user', userInfo._id);
       formData.append('text', newPostText);
       if (image) {
         formData.append('image', image);
       }
-
       await dispatch(postPublication(formData)).unwrap();
-
-      // Limpiar los campos después de enviar la publicación
       setNewPostText("");
       setImage(null);
     } catch (error) {
       console.error("Error al crear la publicación:", error);
-    } finally {
-      setIsPosting(false); // Establecer el estado de publicación en falso cuando se recibe una respuesta del servidor o hay un error
     }
   };
 
@@ -81,7 +74,7 @@ export default function CreatePublication() {
       )}
       <Box mt={2} display="flex" alignItems="center" justifyContent="space-between" width="100%">
         <input
-          accept="image/*"
+          accept=".jpg,.jpeg,.png"
           style={{ display: "none" }}
           id="contained-button-file"
           type="file"
@@ -92,8 +85,8 @@ export default function CreatePublication() {
             <AddPhotoAlternate />
           </IconButton>
         </label>
-        <Button variant="contained" color="primary" onClick={handleCreatePost} disabled={!newPostText.trim() && !image || isPosting}>
-          {isPosting ? <CircularProgress size={24} /> : 'Publicar'} {/* Mostrar un indicador de carga si se está realizando la publicación */}
+        <Button variant="contained" color="primary" onClick={handleCreatePost} disabled={newPostText === "" || postLoading}>
+          {postLoading ? <CircularProgress size={24} /> : 'Publicar'} {/* Mostrar un indicador de carga si se está realizando la publicación */}
         </Button>
       </Box>
     </Box>

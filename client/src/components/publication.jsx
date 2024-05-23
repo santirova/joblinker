@@ -52,7 +52,7 @@ const Publication = ({ publication }) => {
   const handleModalClose = () => setModalOpen(false);
 
   return (
-    <Box bgcolor="whitesmoke" padding={2} marginY={2} borderRadius={2} border={1} borderColor="grey.300" boxShadow={2} overflow="hidden">
+    <Box bgcolor="#FFF" padding={2} marginY={2} borderRadius={2} border={1} borderColor="grey.300" boxShadow={2} overflow="hidden">
       <Box display="flex" flexDirection="column">
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
           <Box display="flex" flexShrink={0}>

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { Add as AddIcon, Close as CloseIcon } from "@mui/icons-material";
 import ApplicationItem from "../components/applicationItem";
-import Filters from "../components/filter";
+import Filters from "../components/filters";
 import PaginationComp from "../components/paginationComp";
 import ApplicationForm from "../components/applicationForm";
 
