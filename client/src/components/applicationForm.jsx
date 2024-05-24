@@ -1,12 +1,13 @@
 import { Autocomplete, Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Chip } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { postApplication } from "../redux/actions/applicationsActions"; 
+import { postApplication, updateApplication } from "../redux/actions/applicationsActions";
 
 const ApplicationForm = ({ handleClose, initialData = null, isEditMode = false }) => {
   const userId = localStorage.getItem('userId');
   const dispatch = useDispatch();
   const { postError, loading } = useSelector((state) => state.applications);
+
   const [formData, setFormData] = useState({
     link: "",
     origin: "",
@@ -17,13 +18,17 @@ const ApplicationForm = ({ handleClose, initialData = null, isEditMode = false }
     level: "",
     status: ""
   });
+
+  const [applicationId, setApplicationId] = useState(null);
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
-    if (initialData) {
-      setFormData(initialData);
+    if (initialData && isEditMode) {
+      const { _id, link, origin, position, technologies, company, note, level, status } = initialData;
+      setFormData({ link, origin, position, technologies, company, note, level, status });
+      setApplicationId(_id);
     }
-  }, [initialData]);
+  }, [initialData, isEditMode]);
 
   useEffect(() => {
     validateForm();
@@ -61,10 +66,11 @@ const ApplicationForm = ({ handleClose, initialData = null, isEditMode = false }
       formData
     };
     if (isEditMode) {
-      console.log(data)
-      // await dispatch(updateApplication({ id: initialData._id, data })).unwrap();
+      data.applicationId = applicationId
+      console.log(data);
+      await dispatch(updateApplication(data)).unwrap();
     } else {
-      delete data.formData.status
+      delete data.formData.status;
       await dispatch(postApplication(data)).unwrap();
     }
 

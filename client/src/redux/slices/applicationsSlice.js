@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserApplications, postApplication } from "../actions/applicationsActions";
+import { getUserApplications, postApplication, updateApplication } from "../actions/applicationsActions";
 
 const initialState = {
     userApplications: null,
@@ -75,7 +75,6 @@ export const applicationsSlice = createSlice({
                 state.userApplications = action.payload;
             })
             .addCase(getUserApplications.rejected, (state, action) => {
-                console.log(action);
                 state.loading = false;
                 state.error = action.error;
             })
@@ -94,9 +93,30 @@ export const applicationsSlice = createSlice({
                 // state.filteredApplications.unshift(action.payload);
             })
             .addCase(postApplication.rejected, (state, action) => {
-                console.log(action);
                 state.loading = false;
                 state.postError = action.error;
+            })
+            .addCase(updateApplication.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateApplication.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.userApplications.findIndex(app => app._id === action.payload._id);
+                if (index !== -1) {
+                    state.userApplications[index] = action.payload;
+                }
+                // Actualiza las aplicaciones filtradas si están aplicados los filtros
+                if (state.filteredApplications) {
+                    const filteredIndex = state.filteredApplications.findIndex(app => app._id === action.payload._id);
+                    if (filteredIndex !== -1) {
+                        state.filteredApplications[filteredIndex] = action.payload;
+                    }
+                }
+            })
+            .addCase(updateApplication.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
             });
     },
 });

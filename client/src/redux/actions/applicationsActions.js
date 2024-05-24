@@ -35,3 +35,23 @@ export const postApplication = createAsyncThunk(
         }
     }
 );
+
+export const updateApplication = createAsyncThunk(
+    'applications/updateApplication',
+    async (data,thunkAPI) =>{  
+        try {
+            const { formData, id, applicationId } = data
+            const response = await axios.put(`http://localhost:4001/application/${id}`,{data:formData, applicationId});
+            return response.data; // Retorna los datos obtenidos de la API
+        }
+         catch (error) {
+            if (error.response && error.response.data && error.response.data.error) {
+                // Si el error proviene del servidor y contiene un mensaje específico
+                return thunkAPI.rejectWithValue(error.response.data.error);
+              } else {
+                // Si hay un error genérico
+                throw new Error('Error fetching user applications: ' + error.message);
+              }
+        }
+    }
+);
