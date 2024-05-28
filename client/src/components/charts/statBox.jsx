@@ -1,4 +1,4 @@
-import {  Typography, Paper } from "@mui/material";
+import { Typography, Paper } from "@mui/material";
 
 export default function StatBox({ title, subtitle, backgroundColor }) {
   return (

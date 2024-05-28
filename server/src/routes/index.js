@@ -4,6 +4,7 @@ const postRouter = require('./publications')
 const commentsRouter = require('./comments')
 const applicationsRouter = require('./applications')
 const likeRouter = require('./likes')
+const statsRouter = require('./stats')
 const router = Router()
 
 router.use('/auth', authRouter)
@@ -11,5 +12,6 @@ router.use('/post', postRouter)
 router.use('/comment', commentsRouter)
 router.use('/application', applicationsRouter)
 router.use('/like', likeRouter)
+router.use('/stats', statsRouter)
 
 module.exports = router

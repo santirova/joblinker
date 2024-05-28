@@ -1,9 +1,8 @@
 import { LineChart } from "@mui/x-charts/LineChart";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 
 export default function BasicLineChart() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery('(max-width:960px)'); // Utiliza useMediaQuery para determinar si el ancho de la ventana es menor a 960px
+
   return (
     <Box
       sx={{
@@ -11,15 +10,38 @@ export default function BasicLineChart() {
         height: { xs: "250px", md: "400px" },
         backgroundColor: "#FFF",
         borderRadius: "8px",
-        boxShadow: theme.shadows[3],
+        boxShadow: 3,
         padding: 2,
       }}
     >
       <LineChart
-        xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-        series={[{ data: [20, 15, 6, 22, 45, 14],label:"hola" },{ data: [36, 45, 32, 21, 47, 30] }]}
-        width={isMobile ? 500 : 800}
-        height={isMobile ? 200 : 400}
+        xAxis={[
+          {
+            data: [1, 2, 3, 4, 5, 6, 7],
+            scaleType: 'point', // Utiliza 'band' para evitar valores intermedios
+            valueFormatter: value => ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"][value - 1], // Formatear para mostrar los nombres de los días
+            min:1,
+            max:7
+          }
+        ]}
+        series={
+          [
+          {
+              label: "LinkedIn",
+              data: [3, 5, 2, 4, 1, ]
+          },
+          {
+              label: "Indeed",
+              data: [1, 2, 3, 2, 5, 1, 0]
+          },
+          {
+              label: "Glassdoor",
+              data: [0, 1, 0, 0, 2, 1, 3]
+          }
+      ]
+      }
+        // width={isMobile ? 300 : 800}
+        // height={isMobile ? 200 : 400}
       />
     </Box>
   );

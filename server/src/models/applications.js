@@ -30,7 +30,7 @@ const applicationSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default:"pending",
+        default:"Pendiente",
     },
     note: {
         type: String
