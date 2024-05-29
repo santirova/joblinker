@@ -2,8 +2,8 @@ import { Box } from '@mui/material';
 import { BarChart } from '@mui/x-charts/BarChart';
 
 
-export default function BasicBars() {
-
+export default function BasicBars({data}) {
+  console.log(data);
   return (
     <Box
       sx={{
@@ -20,7 +20,7 @@ export default function BasicBars() {
     >
       <BarChart
         xAxis={[{ scaleType: 'band', data: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'] }]}
-        series={[{ data: [3,0,0,0,0,0,0] }]}
+        series={[{ data }]}
         // width={isMobile ? 300 : 500}
         // height={isMobile ? 200 : 300}
       />

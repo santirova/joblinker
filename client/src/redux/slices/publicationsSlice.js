@@ -13,7 +13,7 @@ const initialState = {
 }
 
 export const publicationsSlice = createSlice({
-    name: 'applications', 
+    name: 'publications', 
     initialState,
     reducers: {
         // Aquí puedes agregar tus propias acciones si es necesario

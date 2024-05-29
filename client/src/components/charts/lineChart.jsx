@@ -1,7 +1,7 @@
 import { LineChart } from "@mui/x-charts/LineChart";
 import { Box } from "@mui/material";
 
-export default function BasicLineChart() {
+export default function BasicLineChart({data}) {
 
   return (
     <Box
@@ -24,22 +24,7 @@ export default function BasicLineChart() {
             max:7
           }
         ]}
-        series={
-          [
-          {
-              label: "LinkedIn",
-              data: [3, 5, 2, 4, 1, ]
-          },
-          {
-              label: "Indeed",
-              data: [1, 2, 3, 2, 5, 1, 0]
-          },
-          {
-              label: "Glassdoor",
-              data: [0, 1, 0, 0, 2, 1, 3]
-          }
-      ]
-      }
+        series={data}
         // width={isMobile ? 300 : 800}
         // height={isMobile ? 200 : 400}
       />
