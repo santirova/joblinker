@@ -64,7 +64,7 @@ export default function Applications() {
 
   return (
     <Box bgcolor="whitesmoke" padding={2}>
-      <Container maxWidth="lg" sx={{ minHeight: "100vh", paddingBottom: 2 }}>
+      <Container maxWidth="lg" sx={{ minHeight: "97vh", paddingBottom: 2}}>
         <Grid container alignItems="center" spacing={2} marginBottom={2}>
           <Grid item xs={12} sm={8}>
             <Typography
@@ -104,6 +104,20 @@ export default function Applications() {
             {error.message}
           </Typography>
         )}
+        {
+          userApplications && !userApplications.length && 
+          <Box
+            minHeight="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bgcolor="whitesmoke"
+          >
+            <Typography variant="h5" color="primary" fontFamily="Outfit, sansserif">
+              No tienes postulaciones registradas
+            </Typography>
+          </Box>
+        }
         {visibleApplications?.length ? (
           <Box>
             {visibleApplications.map((application) => (
@@ -122,7 +136,7 @@ export default function Applications() {
         )}
         {filteredApplications && !filteredApplications.length && !loading && (
           <Box
-            minHeight={200}
+            minHeight={1}
             display="flex"
             alignItems="center"
             justifyContent="center"

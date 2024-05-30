@@ -35,10 +35,10 @@ export const statsSlice = createSlice({
                 state.error = null;
               })
               .addCase(fetchAllStats.fulfilled, (state, action) => {
-                state.loading = false;
-                state.statsBar = action.payload.statsBar;
-                state.statsPie = action.payload.statsPie;
-                state.statsLine = action.payload.statsLine;
+                  state.statsBar = action.payload.statsBar;
+                  state.statsPie = action.payload.statsPie;
+                  state.statsLine = action.payload.statsLine;
+                  state.loading = false;
               })
               .addCase(fetchAllStats.rejected, (state, action) => {
                 state.loading = false;

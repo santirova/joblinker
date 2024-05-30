@@ -109,87 +109,92 @@ const getStatsPie = async (user) => {
 }
 
 const getStatsLine = async (userId) => {
-    const now = new Date();
-    
-    // Obtener el inicio de la semana (lunes)
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - (now.getDay() === 0 ? 6 : now.getDay() - 1));
-    startOfWeek.setHours(0, 0, 0, 0);
-  
-    // Día de la semana actual (1 para lunes, 7 para domingo)
-    const currentDayOfWeek = now.getDay() === 0 ? 7 : now.getDay();
-  
-    // Crear pipeline de agregación
-    const aggregationPipeline = [
-      {
-        $match: {
-          user: new mongoose.Types.ObjectId(userId),
-          createdAt: { $gte: startOfWeek }
-        }
-      },
-      {
-        $project: {
-          origin: 1,
-          dayOfWeek: {
-            $cond: [
-              { $eq: [{ $dayOfWeek: "$createdAt" }, 1] },
-              7,
-              { $subtract: [{ $dayOfWeek: "$createdAt" }, 1] }
-            ]
-          }
-        }
-      },
-      {
-        $group: {
-          _id: {
-            dayOfWeek: "$dayOfWeek",
-            origin: "$origin"
-          },
-          count: { $sum: 1 }
-        }
-      },
-      {
-        $sort: { count: -1 }
-      },
-      {
-        $group: {
-          _id: "$_id.origin",
-          data: {
-            $push: {
-              k: "$_id.dayOfWeek",
-              v: "$count"
-            }
-          }
-        }
-      },
-      {
-        $sort: { count: -1 }
-      },
-      {
-        $limit: 3
+  const now = new Date();
+
+  // Obtener el inicio de la semana (lunes)
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - (now.getDay() === 0 ? 6 : now.getDay() - 1));
+  startOfWeek.setHours(0, 0, 0, 0);
+
+  // Día de la semana actual (1 para lunes, 7 para domingo)
+  const currentDayOfWeek = now.getDay() === 0 ? 7 : now.getDay();
+
+  // Crear pipeline de agregación
+  const aggregationPipeline = [
+    {
+      $match: {
+        user: new mongoose.Types.ObjectId(userId),
+        createdAt: { $gte: startOfWeek }
       }
-    ];
-  
-    const results = await Application.aggregate(aggregationPipeline);
-  
-    const formattedData = results.map(result => {
-      const data = Array(currentDayOfWeek).fill(0); // Inicializar un array hasta el día actual
-      
-      result.data.forEach(item => {
-        const dayIndex = item.k - 1; // Convertir dayOfWeek (1-7) a índice de array (0-6)
-        if (dayIndex < currentDayOfWeek) { // Asegurar que solo se llenen los días hasta el actual
-          data[dayIndex] = item.v;
+    },
+    {
+      $project: {
+        origin: 1,
+        dayOfWeek: {
+          $cond: [
+            { $eq: [{ $dayOfWeek: "$createdAt" }, 1] },
+            7,
+            { $subtract: [{ $dayOfWeek: "$createdAt" }, 1] }
+          ]
         }
-      });
-  
-      return {
-        label: result._id,
-        data
-      };
+      }
+    },
+    {
+      $group: {
+        _id: {
+          dayOfWeek: "$dayOfWeek",
+          origin: "$origin"
+        },
+        count: { $sum: 1 }
+      }
+    },
+    {
+      $group: {
+        _id: "$_id.origin",
+        data: {
+          $push: {
+            k: "$_id.dayOfWeek",
+            v: "$count"
+          }
+        },
+        totalPostulaciones: { $sum: "$count" }
+      }
+    },
+    {
+      $sort: { totalPostulaciones: -1 }
+    },
+    {
+      $limit: 3
+    },
+    {
+      $project: {
+        _id: 1,
+        data: 1
+      }
+    }
+  ];
+
+  const results = await Application.aggregate(aggregationPipeline);
+
+  const formattedData = results.map(result => {
+    const data = Array(currentDayOfWeek).fill(0); // Inicializar un array hasta el día actual
+    
+    result.data.forEach(item => {
+      const dayIndex = item.k - 1; // Convertir dayOfWeek (1-7) a índice de array (0-6)
+      if (dayIndex < currentDayOfWeek) { // Asegurar que solo se llenen los días hasta el actual
+        data[dayIndex] = item.v;
+      }
     });
-  
-    return formattedData;
-  }
+
+    return {
+      label: result._id,
+      data
+    };
+  });
+
+  return formattedData;
+};
+
   
 
 module.exports = {

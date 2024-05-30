@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { BarChart } from '@mui/x-charts/BarChart';
 
 
@@ -10,14 +10,18 @@ export default function BasicBars({data}) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width: "auto",
+        width: "100%", 
         height: { xs: "250px", md: "400px" },
         backgroundColor: "#FFF",
         borderRadius: "8px",
         boxShadow: 3,
         padding: 2,
+        flexDirection: "column"
       }}
     >
+      <Typography fontFamily="Outfit, sans-serif" variant="h6" sx={{ marginBottom: 2 }}>
+        Postulaciones Semanales x Día
+      </Typography>
       <BarChart
         xAxis={[{ scaleType: 'band', data: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'] }]}
         series={[{ data }]}

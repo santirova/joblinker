@@ -6,11 +6,12 @@ import BasicBars from "../components/charts/barChart";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllStats, getStatsBoxs } from "../redux/actions/statsActions";
+import LoadingChart from "../components/loadingChart.jsx";
 
 export default function Stats() {
   const dispatch = useDispatch();
   const id = localStorage.getItem('userId');
-  const { statsBox, statsLine, statsBar, statsPie } = useSelector(state => state.stats);
+  const { statsBox, statsLine, statsBar, statsPie, loading } = useSelector(state => state.stats);
 
   useEffect(() => {
     dispatch(getStatsBoxs(id));
@@ -51,17 +52,13 @@ export default function Stats() {
             />
           </Grid>
           <Grid item xs={12}>
-            {statsLine ? <BasicLineChart data={statsLine} /> : <Typography>Cargando datos...</Typography>}
+            {loading ? <LoadingChart /> : <BasicLineChart data={statsLine || []} />}
           </Grid>
           <Grid item xs={12} md={6}>
-            <BasicPie data={statsPie || []} />
+            {loading ? <LoadingChart /> : <BasicPie data={statsPie || []} />}
           </Grid>
           <Grid item xs={12} md={6}>
-            {statsBar && statsBar.length > 0 ? (
-              <BasicBars data={statsBar} />
-            ) : (
-              <Typography>Sin datos</Typography>
-            )}
+            {loading ? <LoadingChart /> : (statsBar && statsBar.length > 0 ? <BasicBars data={statsBar} /> : <Typography>Sin datos</Typography>)}
           </Grid>
         </Grid>
       </Container>

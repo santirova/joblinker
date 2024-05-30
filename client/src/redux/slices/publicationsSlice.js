@@ -6,6 +6,7 @@ const initialState = {
     publications:[],
     loading: false,
     postLoading:false,
+    commentLoading:false,
     error: null,
     comError:null,
     postError:null,
@@ -46,11 +47,11 @@ export const publicationsSlice = createSlice({
                 state.postError = action.error;
             })
             .addCase(commentPublication.pending, (state) => {
-                state.loading = true;
+                state.commentLoading = true;
                 state.comError = null;
             })
             .addCase(commentPublication.fulfilled, (state, action) => {
-                state.loading = false;
+                state.commentLoading = false;
                 console.log(action.payload);
                 const { publicationId, ...comment} = action.payload;
                 const publication = state.publications.find((pub) => pub._id === publicationId);
@@ -61,7 +62,7 @@ export const publicationsSlice = createSlice({
     
             })
             .addCase(commentPublication.rejected, (state, action) => {
-                state.loading = false;
+                state.commentLoading = false;
                 state.comError = action.error;
             })
             .addCase(likePublication.fulfilled, (state, action) => {

@@ -10,6 +10,7 @@ const Publication = ({ publication }) => {
   const [commentText, setCommentText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const _id = useSelector(state => state.user.userInfo?._id);
+  const {commentLoading} = useSelector(state => state.publications);
   const [isLiked, setLiked] = useState( publication.likes.find((id) => id === _id))
   const dispatch = useDispatch();
 
@@ -101,7 +102,7 @@ const Publication = ({ publication }) => {
           <Typography variant="body2" ml={1}>
             {publication.comments.length}
           </Typography>
-          <IconButton size="small" color={isLiked ? 'secondary' : ''} onClick={handleLikeSumbit}>
+          <IconButton size="small" color={isLiked ? 'error' : ''} onClick={handleLikeSumbit}>
             <FavoriteIcon />
           </IconButton>
           <Typography variant="body2" ml={1}>
@@ -134,7 +135,7 @@ const Publication = ({ publication }) => {
                 variant="contained"
                 color="primary"
                 onClick={handleCommentSubmit}
-                disabled={!commentText.trim()}
+                disabled={commentText === "" || commentLoading}
               >
                 Enviar comentario
               </Button>
