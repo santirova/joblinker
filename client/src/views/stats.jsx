@@ -1,11 +1,11 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import StatBox from "../components/charts/statBox";
-import BasicLineChart from "../components/charts/lineChart";
-import BasicPie from "../components/charts/pieChart";
-import BasicBars from "../components/charts/barChart";
+import StatBox from "../components/charts/statBox.jsx";
+import BasicLineChart from "../components/charts/lineChart.jsx";
+import BasicPie from "../components/charts/pieChart.jsx";
+import BasicBars from "../components/charts/barChart.jsx";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllStats, getStatsBoxs } from "../redux/actions/statsActions";
+import { fetchAllStats, getStatsBoxs } from "../redux/actions/statsActions.js";
 import LoadingChart from "../components/loadingChart.jsx";
 
 export default function Stats() {

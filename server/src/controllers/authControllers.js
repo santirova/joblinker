@@ -74,4 +74,15 @@ const getUserInfo = async (id) => {
     return user
 }
 
-module.exports = { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo }
+const validateTokenController = async (token) =>{
+    console.log('en controller');
+    console.log(token);
+    if (!token) {
+        console.log('no hay token');
+        return { message :'no hay token'}
+      }
+    
+    const decoded =  jwt.verify(token, SECRET_KEY);
+    return { message: 'Token válido', user: decoded }
+}
+module.exports = { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo, validateTokenController }

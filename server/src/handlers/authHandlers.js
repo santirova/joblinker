@@ -1,4 +1,4 @@
-const { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo } = require('../controllers/authControllers')
+const { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo, validateTokenController } = require('../controllers/authControllers')
 const { sendPasswordResetEmail, sendWelcomeEmail } = require('../utils/nodemailer')
 
 const postUserHandler = async (req, res) => {
@@ -54,6 +54,19 @@ const getUserInfoHandler = async (req, res) => {
     }
 }
 
+const validateTokenHandler = async (req,res)=>{
+    try {
+        const token = req.header('x-auth-token');
+        console.log(token);
+        const response = await validateTokenController(token)
+        
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(400).send({error:error.message})  
+    }
+}
+
+
 // const logoutHandler = async (req, res) => {
 //     try {
 //         res.cookie("token", 'none', {
@@ -67,4 +80,4 @@ const getUserInfoHandler = async (req, res) => {
 //         res.status(500).send({ error: "Error al cerrar sesión" });
 //     }
 // }
-module.exports = { postUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler, getUserInfoHandler }
+module.exports = { postUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler, getUserInfoHandler, validateTokenHandler }

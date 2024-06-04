@@ -5,19 +5,20 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Root from './routes/root';
+import Root from './views/root';
 import ErrorPage from './errorPage';
-import Applications from './routes/applications';
-import Stats from './routes/stats';
-import Sign from './routes/signContainer';
+import Applications from './views/applications';
+import Stats from './views/stats';
+import Sign from './views/signContainer';
 import SignInForm from './components/signInForm';
 import SignUpForm from './components/signUpForm';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import LandingPage from './routes/landingPage';
-import PublicationsContainer from './routes/publicationsContainer';
+import LandingPage from './views/landingPage';
+import PublicationsContainer from './views/publicationsContainer';
 import ApplicationForm from './components/applicationForm';
-import ProfileView from './routes/profileView';
+import ProfileView from './views/profileView';
+import PrivateRoute from './components/privateRoute';
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Root />,
+    element: <PrivateRoute><Root /></PrivateRoute>,
     children: [
       {
         path: "/home/postulaciones",
