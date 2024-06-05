@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { signUp, signIn, getUserInfo} from "../actions/userActions";
+import { signUp, signIn, getUserInfo, updateUserInfo} from "../actions/userActions";
 
 const initialState = {
     userInfo:null,
@@ -54,6 +54,19 @@ export const userSlice = createSlice({
                 state.error = null;
             })
             .addCase(getUserInfo.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(updateUserInfo.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateUserInfo.fulfilled, (state,action) => {
+                state.loading = false;
+                state.userInfo = action.payload
+                state.error = null;
+            })
+            .addCase(updateUserInfo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

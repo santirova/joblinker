@@ -1,9 +1,10 @@
-import { Box, Button, IconButton, TextField, Typography, Avatar, Divider, Modal } from "@mui/material";
+import { Box, IconButton, TextField, Typography, Avatar, Divider, Modal } from "@mui/material";
 import { ChatBubbleOutline as CommentIcon, FavoriteBorderOutlined as FavoriteIcon, Close as CloseIcon } from "@mui/icons-material";
 import { useState } from "react";
 import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { commentPublication, deleteLike, likePublication } from "../redux/actions/publicationsAcction";
+import ButtonLoading from "./buttonLoading";
 
 const Publication = ({ publication }) => {
   const [commentsVisible, setCommentsVisible] = useState(false);
@@ -110,19 +111,14 @@ const Publication = ({ publication }) => {
           </Typography>
         </Box>
         {commentsVisible && (
-          
           <Box mt={2}>
             <Divider sx={{mb:2}}/>
             {publication?.comments.map((comment) => (
-              <Box key={comment._id} ml={1} mb={1}>
+              <Box key={comment._id} ml={1} mb={2}>
                 <Typography variant="subtitle2" fontWeight="bold">{comment.user?.username}</Typography>
                 <Typography variant="body2">{comment.text}</Typography>
               </Box>
             ))}
-          </Box>
-        )}
-        {commentsVisible && (
-          <Box mt={2}>
             <TextField
               label="Escribe tu comentario"
               variant="outlined"
@@ -131,14 +127,7 @@ const Publication = ({ publication }) => {
               onChange={(e) => setCommentText(e.target.value)}
             />
             <Box mt={1} textAlign="right">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleCommentSubmit}
-                disabled={commentText === "" || commentLoading}
-              >
-                Enviar comentario
-              </Button>
+              <ButtonLoading onClick={handleCommentSubmit} disabled={commentText === "" || commentLoading} text="Comentar" loading={commentLoading}/>
             </Box>
           </Box>
         )}

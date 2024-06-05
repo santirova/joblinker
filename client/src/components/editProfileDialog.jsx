@@ -1,8 +1,13 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Box, Avatar, IconButton } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Delete } from "@mui/icons-material";
+import { updateUserInfo } from '../redux/actions/userActions';
+import ButtonLoading from "./buttonLoading";
 
 export default function EditProfileDialog({ open, onClose, user }) {
+  const dispatch = useDispatch();
+  const { loading } = useSelector(state => state.user)
   const [formData, setFormData] = useState({
     username: user?.username,
     email: user?.email,
@@ -10,6 +15,29 @@ export default function EditProfileDialog({ open, onClose, user }) {
     image: user?.image,
     imageFile: null,
   });
+
+  const [initialData, setInitialData] = useState({
+    username: user?.username,
+    email: user?.email,
+    phone: user?.phone,
+    image: user?.image,
+  });
+
+  useEffect(() => {
+    setInitialData({
+      username: user?.username,
+      email: user?.email,
+      phone: user?.phone,
+      image: user?.image,
+    });
+    setFormData({
+      username: user?.username,
+      email: user?.email,
+      phone: user?.phone,
+      image: user?.image,
+      imageFile: null,
+    });
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -34,9 +62,33 @@ export default function EditProfileDialog({ open, onClose, user }) {
   };
 
   const handleSave = () => {
-    // Aquí puedes agregar la lógica para guardar los datos actualizados, incluyendo la imagen
-    // Esto podría involucrar la conversión de formData a FormData si estás enviando la imagen al servidor
-    onClose();
+    const dataToSubmit = new FormData();
+
+    if (formData.username !== initialData.username) {
+      dataToSubmit.append('username', formData.username);
+    }
+    if (formData.email !== initialData.email) {
+      dataToSubmit.append('email', formData.email);
+    }
+    if (formData.phone !== initialData.phone) {
+      dataToSubmit.append('phone', formData.phone);
+    }
+    if (formData.imageFile) {
+      dataToSubmit.append('image', formData.imageFile);
+    } else if (formData.image === null && initialData.image) {
+      // If the image is removed
+      dataToSubmit.append('image', '');
+    }
+
+    const userId = localStorage.getItem('userId');
+    // if (userId) {
+    //   dataToSubmit.append('_id', userId);
+    // }
+
+    // Dispatch the update action
+    dispatch(updateUserInfo({ userId, dataToSubmit })).then(() => {
+      onClose();
+    });
   };
 
   return (
@@ -97,7 +149,7 @@ export default function EditProfileDialog({ open, onClose, user }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary" variant="outlined">Cancelar</Button>
-        <Button onClick={handleSave} color="primary" variant="contained">Guardar</Button>
+        <ButtonLoading text="Guardar" onClick={handleSave} loading={loading} disabled={loading}/>
       </DialogActions>
     </Dialog>
   );

@@ -1,7 +1,8 @@
-import { Autocomplete, Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Chip } from "@mui/material";
+import { Autocomplete, Box, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Chip } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { postApplication, updateApplication } from "../redux/actions/applicationsActions";
+import ButtonLoading from "./buttonLoading";
 
 const ApplicationForm = ({ handleClose, initialData = null, isEditMode = false }) => {
   const userId = localStorage.getItem('userId');
@@ -222,7 +223,7 @@ const ApplicationForm = ({ handleClose, initialData = null, isEditMode = false }
               </Grid>
             )}
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" disabled={!isValid}>{loading ? "Enviando" : isEditMode ? "Guardar Cambios" : "Enviar"}</Button>
+              <ButtonLoading disabled={!isValid} loading={loading} text={isEditMode ? "Guardar Cambios" : "Enviar"} onClick={handleFormSubmit}/>
             </Grid>
           </Grid>
         </form>

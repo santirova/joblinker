@@ -1,9 +1,10 @@
-import { Box, Button, CircularProgress, Grid, IconButton, TextField } from "@mui/material";
+import { Box, Grid, IconButton, TextField } from "@mui/material";
 import { Delete, AddPhotoAlternate } from "@mui/icons-material";
 import { useState } from "react";
 import Avatar from '@mui/material/Avatar';
 import { useSelector, useDispatch } from "react-redux";
 import { postPublication } from "../redux/actions/publicationsAcction";
+import ButtonLoading from "./buttonLoading";
 
 export default function CreatePublication() {
   const [newPostText, setNewPostText] = useState("");
@@ -85,9 +86,7 @@ export default function CreatePublication() {
             <AddPhotoAlternate />
           </IconButton>
         </label>
-        <Button variant="contained" color="primary" onClick={handleCreatePost} disabled={newPostText === "" || postLoading}>
-          {postLoading ? <CircularProgress size={24} /> : 'Publicar'} {/* Mostrar un indicador de carga si se está realizando la publicación */}
-        </Button>
+        <ButtonLoading onClick={handleCreatePost} disabled= {newPostText === "" || postLoading} loading={postLoading} text="Publicar"/>
       </Box>
     </Box>
   );
