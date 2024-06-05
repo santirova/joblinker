@@ -36,22 +36,23 @@ export default function ProfileView() {
           component={Paper}
         >
           <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} sm={4} textAlign="center">
+            <Grid item xs={12} md={4} textAlign="center">
               <Avatar
                 alt={userInfo?.username}
-                src="/static/images/avatar/1.jpg"
+                src={userInfo?.image}
                 sx={{ width: 100, height: 100, margin: "auto" }}
               />
             </Grid>
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} md={8}>
               <ProfileInfo user={userInfo} />
-              <Box mt={2} display="flex" justifyContent="center">
+              {/*  */}
+            </Grid>
+          </Grid>
+          <Box mt={2} display="flex" >
                 <Button variant="contained" color="primary" onClick={handleEditOpen}>
                   Editar Perfil
                 </Button>
-              </Box>
-            </Grid>
-          </Grid>
+          </Box>
         </Box>
       </Container>
       <EditProfileDialog open={editOpen} onClose={handleEditClose} user={userInfo} />

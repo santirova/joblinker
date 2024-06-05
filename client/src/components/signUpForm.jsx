@@ -1,16 +1,15 @@
-import { Box, Button, Container, IconButton, Link, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, IconButton, Link, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Delete } from '@mui/icons-material';
 import { formStyles } from '../styles/formStyles';
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from '../redux/actions/userActions';
 import { useNavigate } from 'react-router-dom';
 
-
 export default function SignUpForm() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { error , loading } = useSelector((state) => state.user)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { error, loading } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -20,6 +19,8 @@ export default function SignUpForm() {
     phoneNumber: '',
     showPassword: false,
     showRepeatPassword: false,
+    profileImage: null,
+    profileImageURL: '',
   });
 
   const [errors, setErrors] = useState({
@@ -29,8 +30,17 @@ export default function SignUpForm() {
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, files } = e.target;
+    if (name === 'profileImage') {
+      const file = files[0];
+      setFormData({
+        ...formData,
+        profileImage: file,
+        profileImageURL: URL.createObjectURL(file),
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
 
     // Validar campos mientras se escriben
     if (name === 'email') {
@@ -69,28 +79,33 @@ export default function SignUpForm() {
     );
   };
 
-  const onSubmit = async (data) =>{
-    const userInfo = {
-      username:data?.username,
-      email:data?.email,
-      phone:data?.phoneNumber,
-      password:data?.password,
-    }
-    try {
-      await dispatch(signUp(userInfo))
-        .unwrap()
-        .then(()=> navigate("/signin"))
-    } catch (error) {
-        console.log(error)
-    }
-      
+  const onSubmit = async (data) => {
+    const form = new FormData();
+    form.append('username', data.username);
+    form.append('email', data.email);
+    form.append('phone', data.phoneNumber);
+    form.append('password', data.password);
+    form.append('image', data.profileImage);
 
-  }
+    try {
+      await dispatch(signUp(form))
+        .unwrap()
+        .then(() => navigate("/signin"));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData({
+      ...formData,
+      profileImage: null,
+      profileImageURL: '',
+    });
+  };
+
   return (
-    <Container 
-      maxWidth="sm" 
-      style={formStyles}
-    >
+    <Container maxWidth="sm" style={formStyles}>
       <Typography variant="h4" gutterBottom style={{ fontFamily: 'Outfit, sans-serif' }}>
         Registro
       </Typography>
@@ -172,16 +187,39 @@ export default function SignUpForm() {
         helperText={errors.phoneNumberError}
         style={{ marginBottom: '16px' }}
       />
+      <Box mb={2} display="flex" alignItems="center">
+        <input
+          accept="image/png, image/jpeg, image/jpg"
+          style={{ display: 'none' }}
+          id="profileImage"
+          name="profileImage"
+          type="file"
+          onChange={handleChange}
+        />
+        <label htmlFor="profileImage">
+          <Button variant="outlined" color="primary" component="span">
+            Subir Imagen de Perfil
+          </Button>
+        </label>
+        {formData.profileImage && (
+          <Box ml={2} display="flex" alignItems="center">
+            <Avatar src={formData.profileImageURL} alt="Profile Image" sx={{ width: 56, height: 56 }} />
+            <IconButton onClick={handleRemoveImage} color="error" aria-label="delete">
+              <Delete />
+            </IconButton>
+          </Box>
+        )}
+      </Box>
       {error && (
         <Typography variant="body2" color="error" style={{ marginBottom: '16px' }}>
           {error}
         </Typography>
       )}
-       <Button
+      <Button
         variant="contained"
         type="submit"
         disabled={!isFormValid() || loading}
-        onClick={()=> onSubmit(formData)}
+        onClick={() => onSubmit(formData)}
         style={{ position: 'relative' }}
       >
         {loading ? 'Registrando...' : 'Registrarse'}
