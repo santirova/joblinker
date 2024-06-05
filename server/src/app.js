@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const { authMiddleware } = require('./middlewares/authMiddleware')
 require('dotenv').config()
 const { CLIENT_URL } = process.env
-
+console.log(CLIENT_URL)
 const app = express()
 // Middlewares
 app.use(express.json())
