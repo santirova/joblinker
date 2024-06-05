@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios'
+import { privateAxios } from '../../configs/axiosConfig';
 
 export const getPublications = createAsyncThunk(
     'get/publications',
     async () =>{  
         try {
-            const response = await axios.get(`http://localhost:4001/post`);
+            const response = await privateAxios.get(`/post`);
             return response.data;
         }
          catch (error) {
@@ -19,7 +19,7 @@ export const postPublication = createAsyncThunk(
     'post/publication',
     async (postData, thunkAPI) => {  
       try {
-        const response = await axios.post(`http://localhost:4001/post`, postData);
+        const response = await privateAxios.post(`/post`, postData);
         return response.data; 
       } catch (error) {
         if (error.response && error.response.data && error.response.data.error) {
@@ -36,7 +36,7 @@ export const postPublication = createAsyncThunk(
       const { userId , ...data} = postData
       const publicationId = data.postId
       try {
-        const response = await axios.post(`http://localhost:4001/comment/${userId}`, data);
+        const response = await privateAxios.post(`/comment/${userId}`, data);
         return {publicationId, ...response.data} 
       } catch (error) {
         if (error.response && error.response.data && error.response.data.error) {
@@ -54,7 +54,7 @@ export const postPublication = createAsyncThunk(
       const { userId , ...data} = postData
       const publicationId = data.postId
       try {
-        const response = await axios.post(`http://localhost:4001/like/${userId}`, data);
+        const response = await privateAxios.post(`/like/${userId}`, data);
         return {publicationId, ...response.data} 
       } catch (error) {
         if (error.response && error.response.data && error.response.data.error) {
@@ -73,7 +73,7 @@ export const postPublication = createAsyncThunk(
       console.log(publicationId);
       console.log(data);
       try {
-        const response = await axios.delete(`http://localhost:4001/like/${userId}`, {data});
+        const response = await privateAxios.delete(`/like/${userId}`, {data});
         return {publicationId, ...response.data} 
       } catch (error) {
         if (error.response && error.response.data && error.response.data.error) {

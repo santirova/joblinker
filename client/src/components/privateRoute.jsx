@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { axiosJL } from "../configs/axiosConfig";
+
 import { useNavigate } from "react-router-dom";
+import { privateAxios } from "../configs/axiosConfig";
 
 const PrivateRoute = ({ children }) => {
     const  token  = localStorage.getItem("token")
@@ -17,7 +18,7 @@ const PrivateRoute = ({ children }) => {
         } else {
             try {
             // Realiza una llamada a la ruta del servidor para validar el token
-            const response = await axiosJL("/auth/validate", {
+            const response = await privateAxios("/auth/validate", {
             method: "GET",
             headers: {
                 "x-auth-token": `${token}`, // Agrega el token al encabezado de autorización

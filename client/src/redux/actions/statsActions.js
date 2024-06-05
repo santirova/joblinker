@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { privateAxios } from "../../configs/axiosConfig";
 export const getStatsBoxs = createAsyncThunk(
     "get/statsBoxs",
     async (userId, thunkAPI) => {
       try {
-        const response = await axios.get(`http://localhost:4001/stats/statsbox/${userId}`);
+        const response = await privateAxios.get(`/stats/statsbox/${userId}`);
         // Si deseas obtener algo de vuelta
         return response.data;
       } catch (error) {
@@ -26,9 +26,9 @@ export const fetchAllStats = createAsyncThunk(
       try {
         // Hacer las llamadas a la API en paralelo
         const [ statsBar, statsPie, statsLine] = await Promise.all([
-          axios.get(`http://localhost:4001/stats/statsbar/${userId}`),
-          axios.get(`http://localhost:4001/stats/statspie/${userId}`),
-          axios.get(`http://localhost:4001/stats/statsline/${userId}`),
+          privateAxios.get(`/stats/statsbar/${userId}`),
+          privateAxios.get(`/statspie/${userId}`),
+          privateAxios.get(`/stats/statsline/${userId}`),
         ]);
   
         // Devolver los datos recibidos

@@ -59,7 +59,7 @@ const Publication = ({ publication }) => {
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
           <Box display="flex" flexShrink={0}>
             <Avatar
-              src={publication.user?.photoUrl}
+              src={publication.user?.image}
               alt={publication.user?.username}
               sx={{ width: 32, height: 32, fontSize: 16, mr: 0 }}
             >

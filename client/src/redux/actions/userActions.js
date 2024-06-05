@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { axiosJL } from "../../configs/axiosConfig";
+import { privateAxios } from "../../configs/axiosConfig";
 export const signUp = createAsyncThunk(
     "type/signup",
     async (data, thunkAPI) => {
@@ -45,9 +45,9 @@ export const signIn = createAsyncThunk(
 
 export const getUserInfo = createAsyncThunk(
   "get/userInfo",
-  async (id,thunkAPI) => {
+  async (userId,thunkAPI) => {
     try {
-      const response = await axios.get(`http://localhost:4001/auth/userinfo/${id}`);
+      const response = await privateAxios.get(`auth/userinfo/${userId}`);
       // Si deseas obtener algo de vuelta
       return response.data;
     } catch (error) {
@@ -68,7 +68,7 @@ export const updateUserInfo = createAsyncThunk(
   async (data,thunkAPI) => {
     const { userId, dataToSubmit } = data
     try {
-      const response = await axiosJL.put(`/auth/update/${userId}`, dataToSubmit);
+      const response = await privateAxios.put(`/auth/update/${userId}`, dataToSubmit);
       // Si deseas obtener algo de vuelta
       return response.data;
     } catch (error) {

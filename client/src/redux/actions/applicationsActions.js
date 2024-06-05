@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios'
+import { privateAxios } from '../../configs/axiosConfig';
 
 export const getUserApplications = createAsyncThunk(
     'get/fetchApiData',
     async (id) =>{  
         try {
-            const response = await axios.get(`http://localhost:4001/application/${id}`);
+            const response = await privateAxios.get(`/application/${id}`);
             return response.data; // Retorna los datos obtenidos de la API
         }
          catch (error) {
@@ -21,7 +21,8 @@ export const postApplication = createAsyncThunk(
     'post/postApplication',
     async (data,thunkAPI) =>{  
         try {
-            const response = await axios.post(`http://localhost:4001/application/${data.id}`,data.formData);
+            const { id, formData } = data
+            const response = await privateAxios.post(`/application/${id}`,formData);
             return response.data; // Retorna los datos obtenidos de la API
         }
          catch (error) {
@@ -41,7 +42,7 @@ export const updateApplication = createAsyncThunk(
     async (data,thunkAPI) =>{  
         try {
             const { formData, id, applicationId } = data
-            const response = await axios.put(`http://localhost:4001/application/${id}`,{data:formData, applicationId});
+            const response = await privateAxios.put(`/application/${id}`,{data:formData, applicationId});
             return response.data; // Retorna los datos obtenidos de la API
         }
          catch (error) {

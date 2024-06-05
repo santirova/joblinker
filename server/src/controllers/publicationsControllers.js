@@ -47,7 +47,7 @@ const getAllPublications = async () => {
         .sort({ createdAt: "desc" })
         .populate({
             path: 'user', // <- campo del usuario que deseamos poblar
-            select: 'username', // <- campos que deseamos traer del usuario
+            select: 'username image', // <- campos que deseamos traer del usuario
             model: User
         })
         .populate({
