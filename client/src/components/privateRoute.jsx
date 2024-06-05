@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-
 import { useNavigate } from "react-router-dom";
-import { privateAxios } from "../configs/axiosConfig";
+import axios from "axios";
+const api =  import.meta.env.VITE_API_URL;
 
 const PrivateRoute = ({ children }) => {
     const  token  = localStorage.getItem("token")
@@ -10,7 +10,6 @@ const PrivateRoute = ({ children }) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log(token);
         const validateToken = async () => {
         if (!token) {
             navigate("/signin");
@@ -18,7 +17,7 @@ const PrivateRoute = ({ children }) => {
         } else {
             try {
             // Realiza una llamada a la ruta del servidor para validar el token
-            const response = await privateAxios("/auth/validate", {
+            const response = await axios(`${api}auth/validate`, {
             method: "GET",
             headers: {
                 "x-auth-token": `${token}`, // Agrega el token al encabezado de autorización

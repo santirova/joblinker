@@ -30,12 +30,11 @@ export default function SignInForm() {
     e.preventDefault();
 
     try {
-      console.log({ email: formData.email, password: formData.password });
       await dispatch(signIn({ email: formData.email, password: formData.password }))
         .unwrap()
         .then(() => navigate("/home"));
     } catch (error) {
-      console.log('errrroooooooor');
+      console.error(error.message);
     }
   };
 

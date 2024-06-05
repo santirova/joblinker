@@ -68,7 +68,6 @@ const ApplicationForm = ({ handleClose, initialData = null, isEditMode = false }
     };
     if (isEditMode) {
       data.applicationId = applicationId
-      console.log(data);
       await dispatch(updateApplication(data)).unwrap();
     } else {
       delete data.formData.status;

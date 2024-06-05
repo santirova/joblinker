@@ -3,7 +3,6 @@ import { BarChart } from '@mui/x-charts/BarChart';
 
 
 export default function BasicBars({data}) {
-  console.log(data);
   return (
     <Box
       sx={{

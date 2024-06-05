@@ -30,7 +30,6 @@ export const publicationsSlice = createSlice({
                 state.publications = action.payload;
             })
             .addCase(getPublications.rejected, (state, action) => {
-                console.log(action);
                 state.loading = false;
                 state.error = action.error;
             })
@@ -52,10 +51,8 @@ export const publicationsSlice = createSlice({
             })
             .addCase(commentPublication.fulfilled, (state, action) => {
                 state.commentLoading = false;
-                console.log(action.payload);
                 const { publicationId, ...comment} = action.payload;
                 const publication = state.publications.find((pub) => pub._id === publicationId);
-                console.log(publication);
                 if (publication) {
                     publication.comments.push(comment);
                 }
@@ -67,7 +64,6 @@ export const publicationsSlice = createSlice({
             })
             .addCase(likePublication.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action.payload);
                 const { publicationId, userId } = action.payload;
                 const publication = state.publications.find((pub) => pub._id === publicationId);
                 if (publication) {

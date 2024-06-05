@@ -1,17 +1,19 @@
 const { Router } = require('express')
-const authRouter = require('./auth')
+const {authRouter, privUserRouter} = require('./auth')
 const postRouter = require('./publications')
 const commentsRouter = require('./comments')
 const applicationsRouter = require('./applications')
 const likeRouter = require('./likes')
 const statsRouter = require('./stats')
-const router = Router()
+const privRouter = Router()
+const userRouter = Router()
 
-router.use('/auth', authRouter)
-router.use('/post', postRouter)
-router.use('/comment', commentsRouter)
-router.use('/application', applicationsRouter)
-router.use('/like', likeRouter)
-router.use('/stats', statsRouter)
+userRouter.use('/auth', authRouter)
+privRouter.use('/auth', privUserRouter)
+privRouter.use('/post', postRouter)
+privRouter.use('/comment', commentsRouter)
+privRouter.use('/application', applicationsRouter)
+privRouter.use('/like', likeRouter)
+privRouter.use('/stats', statsRouter)
 
-module.exports = router
+module.exports = { privRouter, userRouter}

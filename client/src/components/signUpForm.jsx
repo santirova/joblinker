@@ -92,7 +92,7 @@ export default function SignUpForm() {
         .unwrap()
         .then(() => navigate("/signin"));
     } catch (error) {
-      console.log(error);
+      console.error(error.message);
     }
   };
 

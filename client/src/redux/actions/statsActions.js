@@ -27,7 +27,7 @@ export const fetchAllStats = createAsyncThunk(
         // Hacer las llamadas a la API en paralelo
         const [ statsBar, statsPie, statsLine] = await Promise.all([
           privateAxios.get(`/stats/statsbar/${userId}`),
-          privateAxios.get(`/statspie/${userId}`),
+          privateAxios.get(`/stats/statspie/${userId}`),
           privateAxios.get(`/stats/statsline/${userId}`),
         ]);
   

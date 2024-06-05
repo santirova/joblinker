@@ -1,8 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-const router = require('./routes/index')
+const {privRouter,userRouter} = require('./routes/index')
 const cookieParser = require('cookie-parser')
+const { authMiddleware } = require('./middlewares/authMiddleware')
 
 
 const app = express()
@@ -16,6 +17,6 @@ app.use(morgan('dev'))
 app.use(cookieParser())
 
 // Router
-app.use('/', router)
-
+app.use('/priv',authMiddleware, privRouter)
+app.use('/', userRouter)
 module.exports = app

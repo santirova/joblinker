@@ -24,7 +24,6 @@ const postLike = async (userId, postId) => {
 }
 
 const deleteLike = async (userId, postId) => {
-    console.log(userId,postId);
     const publi = await Publication.findByIdAndUpdate(postId, { $pull: { likes: userId } });
     return {
         message:"¡Like eliminado!",

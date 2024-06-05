@@ -70,8 +70,6 @@ export const postPublication = createAsyncThunk(
     async (postData, thunkAPI) => {  
       const { userId , ...data} = postData
       const publicationId = data.postId
-      console.log(publicationId);
-      console.log(data);
       try {
         const response = await privateAxios.delete(`/like/${userId}`, {data});
         return {publicationId, ...response.data} 

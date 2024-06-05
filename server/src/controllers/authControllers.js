@@ -40,7 +40,6 @@ const updateUserController = async (username, email, phone, file, _id) => {
         { username, email, phone },
         { new: true, select: '-password' }
     )
-    console.log(updated);
     if (file) {
         image = await cloudinary.uploader.upload(file.path);
         if (user.image && user.image.includes('cloudinary.com')){
@@ -83,7 +82,6 @@ const loginController = async (email, password) => {
 
 const forgotPasswordController = async (email) => {
     const user = await User.findOne({ email })
-    console.log(user)
     if (!user) {
         throw new Error('No user found with this email address.')
     }
@@ -110,10 +108,7 @@ const getUserInfo = async (id) => {
 }
 
 const validateTokenController = async (token) =>{
-    console.log('en controller');
-    console.log(token);
     if (!token) {
-        console.log('no hay token');
         return { message :'no hay token'}
       }
     

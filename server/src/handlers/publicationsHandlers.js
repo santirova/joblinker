@@ -7,7 +7,6 @@ const postPublicationHandler = async (req, res) => {
         const newPost = await postPublication(user, text, file)
         res.send(newPost)
     } catch (error) {
-        console.log(error.message);
         res.status(400).send({ error: error.message })
     }
 }
@@ -36,7 +35,6 @@ const getAllPublicationsHandler = async (req, res) => {
         const publications = await getAllPublications()
         res.send(publications)
     } catch (error) {
-        console.log(error.message);
         res.status(400).send({ error: error.message })
     }
 }

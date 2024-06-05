@@ -21,7 +21,6 @@ const updateUserHandler = async (req, res) => {
         const updatedUser = await updateUserController(username, email, phone, file, id)
         res.status(200).send(updatedUser)
     } catch (error) {
-        console.log(error.message)
         res.status(500).send({ error: error.message })
     }
 }
@@ -39,7 +38,6 @@ const loginHandler = async (req, res) => {
 const forgotPasswordHandler = async (req, res) => {
     try {
         const { email } = req.body
-        console.log(email)
         const token = await forgotPasswordController(email)
         sendPasswordResetEmail(email, token)
         res.status(200).send('Email sent successfully')
@@ -71,7 +69,6 @@ const getUserInfoHandler = async (req, res) => {
 const validateTokenHandler = async (req,res)=>{
     try {
         const token = req.header('x-auth-token');
-        console.log(token);
         const response = await validateTokenController(token)
         
         res.status(200).json(response)
