@@ -1,16 +1,16 @@
-// LoginForm.js
-import { Button, Container, IconButton, TextField, Typography } from '@mui/material';
+// SignInForm.js
+import { Button, Container, IconButton, TextField, Typography, Box, Link } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { formStyles } from '../styles/formStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../redux/actions/userActions';
 import { useNavigate } from 'react-router-dom';
+import { formStyles } from '../styles/formStyles';
 
 export default function SignInForm() {
-  const navigate = useNavigate()
-  const { error, loading } = useSelector((state)=> state.user)
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const { error, loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -28,14 +28,12 @@ export default function SignInForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes enviar los datos del formulario a tu servidor para autenticación
-    console.log(formData);
 
     try {
-      console.log({email:formData.email,password:formData.password});
-      await dispatch(signIn({email:formData.email,password:formData.password}))
+      console.log({ email: formData.email, password: formData.password });
+      await dispatch(signIn({ email: formData.email, password: formData.password }))
         .unwrap()
-        .then(()=> navigate("/home"))
+        .then(() => navigate("/home"));
     } catch (error) {
       console.log('errrroooooooor');
     }
@@ -45,13 +43,11 @@ export default function SignInForm() {
     return (
       formData.email.trim() !== '' &&
       formData.password.trim() !== ''
-    )
+    );
   };
+
   return (
-    <Container 
-      maxWidth="sm" 
-      style={formStyles}
-    >
+    <Container maxWidth="sm" style={formStyles}>
       <Typography variant="h4" gutterBottom style={{ fontFamily: 'Outfit, sans-serif' }}>
         Iniciar Sesión
       </Typography>
@@ -86,18 +82,28 @@ export default function SignInForm() {
         }}
         style={{ marginBottom: '16px' }}
       />
-       {error && (
+      {error && (
         <Typography variant="body2" color="error" style={{ marginBottom: '16px' }}>
           {error}
         </Typography>
       )}
-      <Button 
-        variant="contained" 
-        type="submit" 
-        onClick={handleSubmit} 
-        disabled={!isFormValid() || loading}>
+      <Button
+        variant="contained"
+        type="submit"
+        onClick={handleSubmit}
+        disabled={!isFormValid() || loading}
+        style={{ marginBottom: '16px' }}
+      >
         Iniciar Sesión
       </Button>
+      <Box textAlign="center" mt={2}>
+        <Typography variant="body2">
+          ¿No tienes cuenta?{' '}
+          <Link href="#" onClick={() => navigate('/signup')}>
+            Regístrate
+          </Link>
+        </Typography>
+      </Box>
     </Container>
   );
 }

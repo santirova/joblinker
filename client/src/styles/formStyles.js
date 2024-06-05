@@ -6,11 +6,16 @@ export const formStyles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: 'white',
+    width:'5000px'
   };
   
 export const containerForm ={
-    height: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minHeight: '100vh',
+  backgroundColor: 'whitesmoke',
+  padding:20
 }

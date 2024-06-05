@@ -2,16 +2,22 @@ const { encrypt, compare } = require('../utils/bcrypt')
 const { User } = require('../models/users')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const cloudinary = require('../configs/cloudinary')
 const { SECRET_KEY } = process.env
 
-const postUserController = async (username, password, email, phone) => {
+const postUserController = async (username, password, email, phone, file) => {
     const hashPassword = await encrypt(password)
     const user =await User.findOne({ email })
     if (user) {
         throw new Error('El email ya ha sido registrado anteriormente')
         
     }
+    let image;
+    if(file){
+        image = await cloudinary.uploader.upload(file.path)
+    }
     const newUser = new User({
+        image:image && image.secure_url,
         username,
         password: hashPassword,
         email,

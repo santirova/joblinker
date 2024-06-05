@@ -1,4 +1,4 @@
-import { Button, Container, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, IconButton, Link, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { formStyles } from '../styles/formStyles';
@@ -186,6 +186,14 @@ export default function SignUpForm() {
       >
         {loading ? 'Registrando...' : 'Registrarse'}
       </Button>
+      <Box textAlign="center" mt={2}>
+        <Typography variant="body2">
+          ¿Ya tienes cuenta?{' '}
+          <Link href="#" onClick={() => navigate('/signin')}>
+            Iniciar sesión
+          </Link>
+        </Typography>
+      </Box>
     </Container>
   );
 }

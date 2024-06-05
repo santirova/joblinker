@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     phone: {
         type: Number
     },
-    photo: {
+    image: {
         type: String
     },
     creatAt: {

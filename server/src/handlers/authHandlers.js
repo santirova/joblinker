@@ -2,9 +2,10 @@ const { postUserController, loginController, forgotPasswordController, resetPass
 const { sendPasswordResetEmail, sendWelcomeEmail } = require('../utils/nodemailer')
 
 const postUserHandler = async (req, res) => {
-    const { username, password, email, phone, photo } = req.body
+    const { username, password, email, phone } = req.body
+    const file = req.file
     try {
-        const newUser = await postUserController(username, password, email, phone, photo)
+        const newUser = await postUserController(username, password, email, phone, file)
         sendWelcomeEmail(email)
         res.status(200).send(newUser)
     } catch (error) {
