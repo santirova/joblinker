@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { privateAxios } from "../../configs/axiosConfig";
+const api =  import.meta.env.VITE_API_URL;
 export const signUp = createAsyncThunk(
     "type/signup",
     async (data, thunkAPI) => {
       try {
-        const response = await axios.post("http://localhost:4001/auth/register", data);
+        const response = await axios.post(`${api}auth/register`, data);
         // Si deseas obtener algo de vuelta
         return response.data;
       } catch (error) {
@@ -25,7 +26,7 @@ export const signIn = createAsyncThunk(
   "type/signin",
   async (data,thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:4001/auth/login",data);
+      const response = await axios.post(`${api}auth/login`,data);
       // Si deseas obtener algo de vuelta
       localStorage.setItem('userId', response.data.user._id);
       localStorage.setItem('token', response.data.token);

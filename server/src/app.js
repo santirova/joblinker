@@ -4,13 +4,14 @@ const morgan = require('morgan')
 const {privRouter,userRouter} = require('./routes/index')
 const cookieParser = require('cookie-parser')
 const { authMiddleware } = require('./middlewares/authMiddleware')
-
+require('dotenv').config()
+const { CLIENT_URL } = process.env
 
 const app = express()
 // Middlewares
 app.use(express.json())
 app.use(cors({
-    origin:'http://localhost:5173',
+    origin:`${CLIENT_URL}`,
     credentials:true
 }))
 app.use(morgan('dev'))
