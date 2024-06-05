@@ -1,4 +1,4 @@
-const { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo, validateTokenController } = require('../controllers/authControllers')
+const { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo, validateTokenController, updateUserController } = require('../controllers/authControllers')
 const { sendPasswordResetEmail, sendWelcomeEmail } = require('../utils/nodemailer')
 
 const postUserHandler = async (req, res) => {
@@ -9,6 +9,19 @@ const postUserHandler = async (req, res) => {
         sendWelcomeEmail(email)
         res.status(200).send(newUser)
     } catch (error) {
+        res.status(500).send({ error: error.message })
+    }
+}
+
+const updateUserHandler = async (req, res) => {
+    const { username, email, phone } = req.body
+    const { id } = req.params
+    const file = req.file
+    try {
+        const updatedUser = await updateUserController(username, email, phone, file, id)
+        res.status(200).send(updatedUser)
+    } catch (error) {
+        console.log(error.message)
         res.status(500).send({ error: error.message })
     }
 }
@@ -81,4 +94,4 @@ const validateTokenHandler = async (req,res)=>{
 //         res.status(500).send({ error: "Error al cerrar sesión" });
 //     }
 // }
-module.exports = { postUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler, getUserInfoHandler, validateTokenHandler }
+module.exports = { postUserHandler, updateUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler, getUserInfoHandler, validateTokenHandler }

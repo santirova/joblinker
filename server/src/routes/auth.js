@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { postUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler, getUserInfoHandler, logoutHandler, validateTokenHandler } = require('../handlers/authHandlers')
+const { postUserHandler, loginHandler, forgotPasswordHandler, resetPasswordHandler, getUserInfoHandler, logoutHandler, validateTokenHandler, updateUserHandler } = require('../handlers/authHandlers')
 const upload = require('../configs/multer')
 
 const authRouter = Router()
@@ -11,5 +11,6 @@ authRouter.get('/forgot', forgotPasswordHandler)
 authRouter.put('/reset', resetPasswordHandler)
 authRouter.get('/userinfo/:id',getUserInfoHandler )
 authRouter.get('/validate', validateTokenHandler )
+authRouter.put('/update/:id', upload.single('image'), updateUserHandler )
 
 module.exports = authRouter

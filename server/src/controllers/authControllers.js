@@ -3,6 +3,7 @@ const { User } = require('../models/users')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const cloudinary = require('../configs/cloudinary')
+const { getPublicIdFromImageUrl } = require('../utils/cloudinary')
 const { SECRET_KEY } = process.env
 
 const postUserController = async (username, password, email, phone, file) => {
@@ -28,6 +29,34 @@ const postUserController = async (username, password, email, phone, file) => {
     return newUser
 }
 
+const updateUserController = async (username, email, phone, file, _id) => {
+    let image;
+    const user = await User.findOne({ _id })
+    if (!user) {
+        throw new Error('User not found')
+    }
+    let updated = await User.findOneAndUpdate(
+        { _id },
+        { username, email, phone },
+        { new: true, select: '-password' }
+    )
+    console.log(updated);
+    if (file) {
+        image = await cloudinary.uploader.upload(file.path);
+        if (user.image && user.image.includes('cloudinary.com')){
+            const publicId = getPublicIdFromImageUrl(user.image);
+            await cloudinary.uploader.destroy(publicId);
+        }
+        const updatedWhitImage = await User.findOneAndUpdate(
+            { _id },
+            { image: image.secure_url},
+            { new: true, select: '-password' } 
+        )
+        updated = updatedWhitImage
+    }
+    return updated
+}
+
 const loginController = async (email, password) => {
     const user = await User.findOne({ email })
 
@@ -39,7 +68,7 @@ const loginController = async (email, password) => {
 
     if (checkPassword) {
         const token = jwt.sign({ userId: user.id, email: user.email }, SECRET_KEY, {
-            expiresIn: '1h'
+            expiresIn: '24h'
         })
         return {
             token,
@@ -91,4 +120,4 @@ const validateTokenController = async (token) =>{
     const decoded =  jwt.verify(token, SECRET_KEY);
     return { message: 'Token válido', user: decoded }
 }
-module.exports = { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo, validateTokenController }
+module.exports = { postUserController, loginController, forgotPasswordController, resetPassword, getUserInfo, validateTokenController, updateUserController }
