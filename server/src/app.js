@@ -9,8 +9,7 @@ const app = express()
 // Middlewares
 app.use(express.json())
 app.use(cors({
-    origin: '*',
-    credentials: true
+    origin: '*'
 }));
 app.use(morgan('dev'))
 app.use(cookieParser())
