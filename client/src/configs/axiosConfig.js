@@ -7,5 +7,6 @@ export const privateAxios = axios.create({
   baseURL: `${api}priv`,
   headers:{
     "x-auth-token": token
-  }
+  },
+  withCredentials:true
 });
