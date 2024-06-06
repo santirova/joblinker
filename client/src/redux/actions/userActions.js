@@ -6,7 +6,7 @@ export const signUp = createAsyncThunk(
     "type/signup",
     async (data, thunkAPI) => {
       try {
-        const response = await axios.post(`${api}auth/register`, data,{withCredentials:true});
+        const response = await axios.post(`${api}auth/register`, data);
         // Si deseas obtener algo de vuelta
         return response.data;
       } catch (error) {
@@ -26,7 +26,7 @@ export const signIn = createAsyncThunk(
   "type/signin",
   async (data,thunkAPI) => {
     try {
-      const response = await axios.post(`${api}auth/login`,data,{withCredentials:true});
+      const response = await axios.post(`${api}auth/login`,data);
       // Si deseas obtener algo de vuelta
       localStorage.setItem('userId', response.data.user._id);
       localStorage.setItem('token', response.data.token);

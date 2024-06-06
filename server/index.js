@@ -11,6 +11,6 @@ app.listen(PORT, () => {
 })
 
 app.get('/', async (req, res) => {
-    console.log(`clientURL: ${CLIENT_URL}`)
+    console.log(`clientURL:${CLIENT_URL}`)
     res.send('primer endpoint')
 })
