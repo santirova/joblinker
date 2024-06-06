@@ -8,7 +8,7 @@ require('dotenv').config();
 const { CLIENT_URL } = process.env;
 
 const app = express();
-
+console.log('CLIENT_URL:', CLIENT_URL);
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
