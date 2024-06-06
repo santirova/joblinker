@@ -14,11 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Configurar CORS para permitir solo el origen específico
-app.use(cors({
-    credentials: true,
-    origin: CLIENT_URL, // Especifica el origen permitido en lugar de '*'
-    methods: "GET, POST, OPTIONS, PUT, DELETE"
-}));
+app.use(cors());
 
 app.use(morgan('dev'));
 
