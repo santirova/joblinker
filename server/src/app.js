@@ -8,9 +8,7 @@ require('dotenv').config()
 const app = express()
 // Middlewares
 app.use(express.json())
-app.use(cors({
-    origin: '*'
-}));
+app.use(cors());
 app.use(morgan('dev'))
 app.use(cookieParser())
 
