@@ -11,5 +11,6 @@ app.listen(PORT, () => {
 })
 
 app.get('/', async (req, res) => {
+    console.log(`server is running on port ${PORT}`)
     res.send('primer endpoint')
 })
