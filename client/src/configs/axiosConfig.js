@@ -8,5 +8,4 @@ export const privateAxios = axios.create({
   headers:{
     "x-auth-token": token
   },
-  withCredentials:true
 });

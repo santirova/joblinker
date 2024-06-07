@@ -22,7 +22,6 @@ const PrivateRoute = ({ children }) => {
             headers: {
                 "x-auth-token": `${token}`, // Agrega el token al encabezado de autorización
             },
-            withCredentials:true
             });
     
             if (response.status !== 200) {
