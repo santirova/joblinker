@@ -10,5 +10,10 @@ app.listen(PORT, () => {
 })
 
 app.get('/', async (req, res) => {
-    res.send('primer endpoint')
+    try {
+        res.send('Servidor activo')
+    } catch (error) {
+        res.status(400).send('Error al levantar el servidor')
+    }
+    
 })

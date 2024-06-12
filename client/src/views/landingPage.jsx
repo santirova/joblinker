@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Typography, Button, Grid, Box, Paper } from '@mui/material';
+import { Container, Typography, Button, Grid, Box, Paper, Dialog, DialogTitle, DialogContent, DialogContentText, CircularProgress } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { styled } from '@mui/system';
 import backgroundImage from '/fondoLanding.jpg'; // Reemplaza con la ruta de tu imagen de fondo
@@ -29,8 +30,38 @@ const FeatureCard = styled(Paper)(({ theme }) => ({
 }));
 
 const LandingPage = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const wakeUpServer = async () => {
+      try {
+        const response = await fetch('/api/ping'); // Cambia esta URL según sea necesario
+        if (response.ok) {
+          setLoading(false); // Servidor está despierto
+        } else {
+          console.error('Server did not respond correctly');
+        }
+      } catch (error) {
+        console.error('Error waking up the server:', error);
+      }
+    };
+
+    wakeUpServer();
+  }, []);
+
   return (
     <Box bgcolor="whitesmoke" minHeight="100vh">
+      <Dialog open={loading}>
+        <DialogTitle>Espere un momento</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            La instancia del servidor se está levantando. Esto puede tomar algunos segundos debido al uso de una instancia gratuita en Render, la cual se suspende después de periodos de inactividad. Gracias por su paciencia.
+          </DialogContentText>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <CircularProgress />
+          </Box>
+        </DialogContent>
+      </Dialog>
       <HeroSection>
         <Typography variant="h2" component="h1" gutterBottom fontFamily="Outfit, sans-serif">
           <strong>¡Bienvenido a JobLinker!</strong>
@@ -73,7 +104,7 @@ const LandingPage = () => {
         <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>
             <FeatureCard>
-              <CheckCircleIcon style={{ fontSize: '3rem', marginBottom: '16px' }} color='primary'  />
+              <CheckCircleIcon style={{ fontSize: '3rem', marginBottom: '16px' }} color='primary' />
               <Typography variant="h5" component="h3" gutterBottom>
                 Seguimiento de Postulaciones
               </Typography>
