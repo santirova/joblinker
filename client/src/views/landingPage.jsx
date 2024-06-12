@@ -4,6 +4,8 @@ import { Container, Typography, Button, Grid, Box, Paper, Dialog, DialogTitle, D
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { styled } from '@mui/system';
 import backgroundImage from '/fondoLanding.jpg'; // Reemplaza con la ruta de tu imagen de fondo
+import axios from 'axios';
+const api =  import.meta.env.VITE_API_URL;
 
 const HeroSection = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -35,7 +37,8 @@ const LandingPage = () => {
   useEffect(() => {
     const wakeUpServer = async () => {
       try {
-        const response = await fetch('/api/ping'); // Cambia esta URL según sea necesario
+        const response = await axios.get(api); // Cambia esta URL según sea necesario
+        console.log(response);
         if (response.ok) {
           setLoading(false); // Servidor está despierto
         } else {
