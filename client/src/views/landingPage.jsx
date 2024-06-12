@@ -39,7 +39,7 @@ const LandingPage = () => {
       try {
         const response = await axios.get(api); // Cambia esta URL según sea necesario
         console.log(response);
-        if (response.ok) {
+        if (response.status === 200) {
           setLoading(false); // Servidor está despierto
         } else {
           console.error('Server did not respond correctly');
